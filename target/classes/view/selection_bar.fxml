@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ToolBar?>
+
+<ToolBar prefHeight="30.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.clinic.controller.SelectionBarController">
+    <items>
+        <Button id="home_btn" fx:id="homeBtn" mnemonicParsing="false" onAction="#switchHomePage" style="-fx-background-color: transparent;" text="Home">
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </Button>
+        <Button fx:id="patientBtn" mnemonicParsing="false" onAction="#switchPatientPage" style="-fx-background-color: transparent;" text="Patient">
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </Button>
+        <Button fx:id="settingBtn" mnemonicParsing="false" onAction="#switchSettingPage" style="-fx-background-color: transparent;" text="Settings">
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </Button>
+    </items>
+</ToolBar>
