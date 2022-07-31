@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,7 +19,7 @@ public class PatientPageController implements Initializable {
     private UserModel userModel;
     private MainView mainView;
 
-    public TextField searchBarText;
+    public TextField searchBarInput;
 
     public TableView<ClientModel> table;
 
@@ -26,7 +27,7 @@ public class PatientPageController implements Initializable {
 
     public TableColumn<ClientModel, Integer> age;
 
-    public TableColumn<ClientModel, Integer> recentPayment;
+    public TableColumn<ClientModel, Double> recentPayment;
 
     public TableColumn<ClientModel, Integer> visited;
 
@@ -43,22 +44,20 @@ public class PatientPageController implements Initializable {
         this.userModel = userModel;
     }
 
-    ObservableList<ClientModel> list = FXCollections.observableArrayList();
-
-    {
-//        new ClientModel("Eren Yeager");
-        new ClientModel("Eren Yeager", 19, 09042021.0 , 26072022, "solving cringiness", 4);
-        new ClientModel("Mikasa Ackerman", 19, 09042017.0, 26072022, "solving massive cringiness", 3);
-    }
+    ObservableList<ClientModel> list = FXCollections.observableArrayList(
+        new ClientModel("Eren Yeager", 19, 09042021.0 , 26072022, "solving cringiness", 4),
+        new ClientModel("Mikasa Ackerman", 19, 09042017.0, 26072022, "solving massive cringiness", 3)
+    );
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        name.setCellValueFactory(new PropertyValueFactory<ClientModel, String>("name"));
-//        age.setCellValueFactory(new PropertyValueFactory<ClientModel, Integer>("age"));
-//        recentPayment.setCellValueFactory(new PropertyValueFactory<ClientModel, Integer>("transactionDate"));
-//        visited.setCellValueFactory(new PropertyValueFactory<ClientModel, Integer>("visited"));
-//        currentTreatmentPlan.setCellValueFactory(new PropertyValueFactory<ClientModel, String>("treatmentPlan"));
-//        remainingTreatment.setCellValueFactory(new PropertyValueFactory<ClientModel, Integer>("remainingTime"));
-//        table.setItems(list);
+
+        name.setCellValueFactory(new PropertyValueFactory<ClientModel, String>("name"));
+        age.setCellValueFactory(new PropertyValueFactory<ClientModel, Integer>("age"));
+        recentPayment.setCellValueFactory(new PropertyValueFactory<ClientModel, Double>("transactionDate"));
+        visited.setCellValueFactory(new PropertyValueFactory<ClientModel, Integer>("visited"));
+        currentTreatmentPlan.setCellValueFactory(new PropertyValueFactory<ClientModel, String>("treatmentPlan"));
+        remainingTreatment.setCellValueFactory(new PropertyValueFactory<ClientModel, Integer>("remainingTime"));
+        table.setItems(list);
     }
 }

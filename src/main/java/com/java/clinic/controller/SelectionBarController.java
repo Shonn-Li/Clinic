@@ -34,14 +34,13 @@ public class SelectionBarController {
 
     public void switchHomePage(Event e) {
         System.out.println("switchHomePage clicked");
-//        mainView.setHomePage();
+        mainView.setHomePage();
 
     }
 
     public void switchPatientPage(Event e) {
-        patientBtn.setText("no longer patient");
         System.out.println("switchPatientPage clicked");
-//        mainView.setPatientPage();
+        mainView.setPatientPage();
     }
 
     public void switchSettingPage(Event e) {

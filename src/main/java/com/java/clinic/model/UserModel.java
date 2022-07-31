@@ -11,5 +11,6 @@ public class UserModel {
     private StringProperty password = new SimpleStringProperty();
     private ListProperty<ClientModel> clients = new SimpleListProperty<ClientModel>();
     public UserModel() {
+
     }
 }
