@@ -7,10 +7,18 @@ import javafx.beans.property.StringProperty;
 
 
 public class UserModel {
-    private StringProperty username = new SimpleStringProperty();
-    private StringProperty password = new SimpleStringProperty();
+    private StringProperty username;
+    private StringProperty password;
+    private StringProperty email;
+    private StringProperty jdbcConnectURL;
     private ListProperty<ClientModel> clients = new SimpleListProperty<ClientModel>();
     public UserModel() {
+
+    }
+    public UserModel(String username, String password, String jdbcConnectionURL) {
+
+    }
+    public UserModel(String username, String password, String email, String jdbcConnectionURL) {
 
     }
 }

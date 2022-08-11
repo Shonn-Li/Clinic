@@ -15,7 +15,7 @@ import java.io.IOException;
 public class MainView {
     private final Stage stage;
     private final BorderPane root;
-    private final UserModel viewModel;
+    private UserModel userModel;
     private ToolBar selectionBar;
     private SelectionBarController selectionBarController;
     private PatientPageController patientPageController;
@@ -26,15 +26,14 @@ public class MainView {
     private static final double WINDOW_X = 800;
     private static final double WINDOW_Y = 600;
 
-    public MainView(Stage stage, UserModel viewModel) {
+    public MainView(Stage stage) {
         this.stage = stage;
-        this.viewModel = viewModel;
         root = new BorderPane();
-        stage.show();
-        initializeUserInterface();
+        LoginView loginView = new LoginView(stage, this);
     }
 
-    public void initializeUserInterface() {
+    public void initializeClinicInterface(UserModel userModel) {
+        this.userModel = userModel;
         drawBackground();
         drawToolBar();
         initHomePage();
@@ -58,7 +57,7 @@ public class MainView {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/selection_bar.fxml"));
             selectionBar = loader.load();
             selectionBarController = loader.<SelectionBarController>getController();
-            selectionBarController.initSelectionBarController(this, viewModel);
+            selectionBarController.initSelectionBarController(this, userModel);
 
             // not linking but passes data
 //            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/selection_bar.fxml"));
@@ -97,7 +96,7 @@ public class MainView {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/patients_page.fxml"));
             patientPage = loader.load();
             patientPageController = loader.<PatientPageController>getController();
-            patientPageController.initPatientPageController(this, viewModel);
+            patientPageController.initPatientPageController(this, userModel);
 
             // not linking but passes data
 //            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/patients_page.fxml"));
