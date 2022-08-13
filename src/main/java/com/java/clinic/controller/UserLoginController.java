@@ -1,5 +1,6 @@
 package com.java.clinic.controller;
 
+import com.java.clinic.exception.UserPasswordOrNameIncorrectException;
 import com.java.clinic.model.UserModel;
 import com.java.clinic.view.LoginView;
 import javafx.event.ActionEvent;
@@ -23,14 +24,22 @@ public class UserLoginController {
     @FXML
     private TextField usernameField;
 
+    @FXML
+    private Label warningText;
+
     public void initUserLoginController(LoginView loginView) {
         this.loginView = loginView;
     }
 
     @FXML
     void loginUser(ActionEvent event) {
-        UserModel userSample = new UserModel();
-        loginView.finishedLogin(userSample);
+        try {
+            UserModel userSample = new UserModel(usernameField.getText(), passwordField.getText());
+            loginView.finishedLogin(userSample);
+        } catch (UserPasswordOrNameIncorrectException e) {
+            System.out.println("username or password incorrect");
+            warningText.setOpacity(1.0);
+        }
     }
 
     @FXML

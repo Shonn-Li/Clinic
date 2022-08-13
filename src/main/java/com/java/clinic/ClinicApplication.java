@@ -6,24 +6,24 @@ import com.java.clinic.view.MainView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.sql.*;
+
 import java.io.IOException;
 
 public class ClinicApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        String url = "jdbc:mysql://localhosr:3306/clinic";
-        String user = "root";
-        String password = "Shonnlee2003";
+//        int result;
+//        String url = "jdbc:mysql://localhost:3306/clinic";
+//        String dbUser = "root";
+//        String dbPassword = "Shonnlee2003";
 //        try {
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//        } catch (ClassNotFoundException e) {
-//            System.out.println("driver not found");
-//        }
-//        try {
-//            Connection connection = DriverManager.getConnection(url, user, password);
-//        } catch (ClassNotFoundException e) {
-//            System.out.println("connection not working");
+//            Connection connection = DriverManager.getConnection(url, dbUser, dbPassword);
+//            Statement statement = connection.createStatement();
+//            result = statement.executeUpdate("INSERT INTO user(username, password, email) VALUES('shonn2', 'shonnlee2003', 'shonnli12032@gmail.com')");
+//        } catch (SQLException e) {
+//            System.out.println("connnection to sql failed");
 //        }
 
         stage.setTitle("Clinic");

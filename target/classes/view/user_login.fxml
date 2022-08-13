@@ -16,6 +16,7 @@
                 <Button fx:id="loginBtn" layoutX="38.0" layoutY="153.0" mnemonicParsing="false" onAction="#loginUser" prefHeight="33.0" prefWidth="276.0" style="-fx-background-color: #ffc900;" text="Log In" />
             <Button fx:id="registerBtn" layoutX="38.0" layoutY="197.0" mnemonicParsing="false" onAction="#switchRegisterPage" prefHeight="33.0" prefWidth="276.0" style="-fx-background-color: #ffc900;" text="Register" />
             <Label layoutX="159.0" layoutY="25.0" text="Clinic" />
+            <Label fx:id="warningText" layoutX="36.0" layoutY="132.0" opacity="0.0" prefHeight="17.0" prefWidth="182.0" text="Username or password incorrect" textFill="#f50505" />
             </children>
         </AnchorPane>
    </center>

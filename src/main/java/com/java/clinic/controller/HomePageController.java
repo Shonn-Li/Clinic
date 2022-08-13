@@ -2,13 +2,22 @@ package com.java.clinic.controller;
 
 import com.java.clinic.model.UserModel;
 import com.java.clinic.view.MainView;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 
 public class HomePageController {
-    private UserModel viewModel;
+    private UserModel userModel;
     private MainView mainView;
 
-    public HomePageController(UserModel viewModel, MainView mainView) {
-        this.viewModel = viewModel;
+    @FXML
+    private Label welcomeText;
+    public void initHomePageController(MainView mainView, UserModel userModel) {
+        this.userModel = userModel;
         this.mainView = mainView;
+        if (userModel.isFirstTimeUser()) {
+            welcomeText.setText("Welcome to Clinic App " + userModel.getUsername());
+        } else {
+            welcomeText.setText("Welcome back " + userModel.getUsername());
+        }
     }
 }

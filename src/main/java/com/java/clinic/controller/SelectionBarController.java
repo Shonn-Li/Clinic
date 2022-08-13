@@ -6,14 +6,15 @@ import com.java.clinic.view.MainView;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.text.Text;
 
 
 public class SelectionBarController {
     @FXML
     private Button homeBtn;
+
     @FXML
     private Button patientBtn;
+
     @FXML
     private Button settingBtn;
     private MainView mainView;
@@ -40,7 +41,7 @@ public class SelectionBarController {
 
     public void switchPatientPage(Event e) {
         System.out.println("switchPatientPage clicked");
-        mainView.setPatientPage();
+        mainView.setClientPage();
     }
 
     public void switchSettingPage(Event e) {

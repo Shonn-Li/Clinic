@@ -1,6 +1,7 @@
 package com.java.clinic.view;
 
-import com.java.clinic.controller.PatientPageController;
+import com.java.clinic.controller.HomePageController;
+import com.java.clinic.controller.ClientPageController;
 import com.java.clinic.controller.SelectionBarController;
 import com.java.clinic.model.UserModel;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +19,8 @@ public class MainView {
     private UserModel userModel;
     private ToolBar selectionBar;
     private SelectionBarController selectionBarController;
-    private PatientPageController patientPageController;
+    private ClientPageController clientPageController;
+    private HomePageController homePageController;
     private AnchorPane homePage;
     private BorderPane patientPage;
     //    private
@@ -37,7 +39,7 @@ public class MainView {
         drawBackground();
         drawToolBar();
         initHomePage();
-        initPatientPage();
+        initClientPage();
         setHomePage();
         stage.show();
     }
@@ -78,6 +80,8 @@ public class MainView {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/home_page.fxml"));
             homePage = loader.load();
+            homePageController = loader.<HomePageController>getController();
+            homePageController.initHomePageController(this, userModel);
         } catch (IOException io) {
             System.out.println("home page not loaded");
         }
@@ -87,19 +91,19 @@ public class MainView {
         root.setCenter(homePage);
     }
 
-    public void initPatientPage() {
+    public void initClientPage() {
         if (patientPage != null) {
             System.err.println("Already initialized patientPage");
             return;
         }
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/patients_page.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/client_page.fxml"));
             patientPage = loader.load();
-            patientPageController = loader.<PatientPageController>getController();
-            patientPageController.initPatientPageController(this, userModel);
+            clientPageController = loader.<ClientPageController>getController();
+            clientPageController.initClientPageController(this, userModel);
 
             // not linking but passes data
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/patients_page.fxml"));
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/client_page.fxml"));
 //            patientPageController = new PatientPageController(this, viewModel);
 //            loader.setController(patientPageController);
 //            patientPage = loader.load();
@@ -108,7 +112,7 @@ public class MainView {
         }
     }
 
-    public void setPatientPage() {
+    public void setClientPage() {
         root.setCenter(patientPage);
     }
 

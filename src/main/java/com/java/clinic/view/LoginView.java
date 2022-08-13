@@ -35,6 +35,8 @@ public class LoginView {
     public void finishedLogin(UserModel userModel) {
         mainView.initializeClinicInterface(userModel);
     }
+
+
     public void setStageToLogin() {
         stage.setScene(loginScene);
         stage.show();

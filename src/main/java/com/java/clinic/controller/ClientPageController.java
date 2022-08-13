@@ -5,8 +5,10 @@ import com.java.clinic.model.UserModel;
 import com.java.clinic.view.MainView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -15,7 +17,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class PatientPageController implements Initializable {
+public class ClientPageController implements Initializable {
     private UserModel userModel;
     private MainView mainView;
 
@@ -39,7 +41,7 @@ public class PatientPageController implements Initializable {
 //        this.mainView = mainView;
 //        this.userModel = userModel;
 //    }
-    public void initPatientPageController(MainView mainView, UserModel userModel) {
+    public void initClientPageController(MainView mainView, UserModel userModel) {
         this.mainView = mainView;
         this.userModel = userModel;
     }
@@ -59,5 +61,15 @@ public class PatientPageController implements Initializable {
         currentTreatmentPlan.setCellValueFactory(new PropertyValueFactory<ClientModel, String>("treatmentPlan"));
         remainingTreatment.setCellValueFactory(new PropertyValueFactory<ClientModel, Integer>("remainingTime"));
         table.setItems(list);
+        table.setRowFactory(tv -> {
+            TableRow<ClientModel> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    ClientModel rowData = row.getItem();
+                    FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource("client_info_page.fxml"));
+                }
+            });
+            return row ;
+        });
     }
 }
