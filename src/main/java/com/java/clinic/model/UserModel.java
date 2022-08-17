@@ -4,10 +4,14 @@ import com.java.clinic.exception.EmailAlreadyExistException;
 import com.java.clinic.exception.UserPasswordOrNameIncorrectException;
 import com.java.clinic.exception.UsernameAlreadyExistException;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.*;
+import java.util.List;
 
 
 public class UserModel {
@@ -15,7 +19,7 @@ public class UserModel {
     private SimpleStringProperty password;
     private SimpleStringProperty email;
     private SimpleIntegerProperty userId;
-    private SimpleObjectProperty<ClientModel> clientModels;
+    private SimpleListProperty<ClientModel> clientModels;
     private ResultSet queryOutput;
     private int queryOutputStatus;
     private String url = "jdbc:mysql://localhost:3306/clinic";
@@ -27,6 +31,7 @@ public class UserModel {
     public UserModel(String username, String password) {
         this.username = new SimpleStringProperty(username);
         this.password = new SimpleStringProperty(password);
+
         try {
             Connection connection = DriverManager.getConnection(url, dbUser, dbPassword);
             Statement statement = connection.createStatement();
@@ -34,8 +39,9 @@ public class UserModel {
             if (!queryOutput.isBeforeFirst()) {
                 throw new UserPasswordOrNameIncorrectException();
             }
-            while(queryOutput.next()) {
-                System.out.println("making sure queryOutput from login only queried once");
+            System.out.print("loading user model (I should be singular): ");
+            while (queryOutput.next()) {
+                System.out.println("I");
                 this.email = new SimpleStringProperty(queryOutput.getString("email"));
                 this.userId = new SimpleIntegerProperty(queryOutput.getInt("user_id"));
             }
@@ -66,18 +72,20 @@ public class UserModel {
         } catch (SQLException e) {
             System.out.println("connection to sql failed");
         }
+        initClientModels();
     }
 
 
     public void initClientModels() {
         try {
+            ObservableList<ClientModel> clientModelList = FXCollections.observableArrayList();;
             Connection connection = DriverManager.getConnection(url, dbUser, dbPassword);
             Statement statement = connection.createStatement();
             queryOutput = statement.executeQuery(selectAllClientIdQuery(this.getUserId()));
             while (queryOutput.next()) {
-
+                clientModelList.add(new ClientModel(queryOutput.getInt("client_id")));
             }
-
+            clientModels = new SimpleListProperty<ClientModel>(clientModelList);
         } catch (SQLException e) {
             System.out.println("connection to sql failed");
         }
@@ -152,5 +160,17 @@ public class UserModel {
 
     public void setUserId(int userId) {
         this.userId.set(userId);
+    }
+
+    public ObservableList<ClientModel> getClientModels() {
+        return clientModels.get();
+    }
+
+    public SimpleListProperty<ClientModel> clientModelsProperty() {
+        return clientModels;
+    }
+
+    public void setClientModels(ObservableList<ClientModel> clientModels) {
+        this.clientModels.set(clientModels);
     }
 }

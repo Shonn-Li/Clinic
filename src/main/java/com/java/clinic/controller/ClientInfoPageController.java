@@ -6,9 +6,8 @@ import javafx.stage.Stage;
 
 public class ClientInfoPageController {
     private Stage stage;
-    private UserModel userModel;
     private ClientModel clientModel;
-    public void initClientInfoPageController(Stage stage, UserModel userModel, ClientModel clientModel) {
+    public void initClientInfoPageController(Stage stage, ClientModel clientModel) {
 
     }
 }
