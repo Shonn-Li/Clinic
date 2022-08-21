@@ -21,7 +21,9 @@ public class LoginView {
     private UserLoginController userLoginController;
     private UserRegisterController userRegisterController;
 
-
+    //
+    // create the login view
+    //
     public LoginView(Stage stage , MainView mainView) {
         this.mainView = mainView;
         this.stage = stage;
@@ -32,21 +34,32 @@ public class LoginView {
         setStageToLogin();
     }
 
+    //
+    // go to main page
+    //
     public void finishedLogin(UserModel userModel) {
         mainView.initializeClinicInterface(userModel);
     }
 
-
+    //
+    // make the logView on login page
+    //
     public void setStageToLogin() {
         stage.setScene(loginScene);
         stage.show();
     }
 
+    //
+    // make the logView on register page
+    //
     public void setStageToRegister() {
         stage.setScene(registerScene);
         stage.show();
     }
 
+    //
+    // initialize login page
+    //
     public void initUserLoginPage() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/user_login.fxml"));
@@ -59,6 +72,9 @@ public class LoginView {
 
     }
 
+    //
+    // initialize register page
+    //
     public void initUserRegisterPage() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/user_register.fxml"));

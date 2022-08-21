@@ -32,6 +32,9 @@ public class UserLoginController {
     @FXML
     private CheckBox rememberMeCB;
 
+    //
+    // initialize controller and look for stored date about user password
+    //
     public void initUserLoginController(LoginView loginView) {
 
         this.loginView = loginView;
@@ -56,7 +59,9 @@ public class UserLoginController {
         }
     }
 
-
+    //
+    // handles login shortcut for enter key
+    //
     @FXML
     void onKeyPressed(KeyEvent event) {
         if (event.getCode().equals(KeyCode.ENTER)) {
@@ -64,6 +69,9 @@ public class UserLoginController {
         }
     }
 
+    //
+    // making sure rememberme button works as designed
+    //
     @FXML
     void onClickRememberMe(ActionEvent event) {
         UsernamePassword e = new UsernamePassword(usernameField.getText(), passwordField.getText(), rememberMeCB.isSelected());
@@ -80,6 +88,9 @@ public class UserLoginController {
         }
     }
 
+    //
+    // logs in user and get the user model through password and username
+    //
     @FXML
     void loginUser(ActionEvent event) {
         try {
@@ -91,6 +102,9 @@ public class UserLoginController {
         }
     }
 
+    //
+    // switch to register page
+    //
     @FXML
     void switchRegisterPage(ActionEvent event) {
         loginView.setStageToRegister();

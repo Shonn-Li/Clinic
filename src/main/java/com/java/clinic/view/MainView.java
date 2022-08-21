@@ -1,7 +1,7 @@
 package com.java.clinic.view;
 
 import com.java.clinic.controller.HomePageController;
-import com.java.clinic.controller.ClientPageController;
+import com.java.clinic.controller.ClientsPageController;
 import com.java.clinic.controller.SelectionBarController;
 import com.java.clinic.model.UserModel;
 import javafx.fxml.FXMLLoader;
@@ -19,12 +19,10 @@ public class MainView {
     private UserModel userModel;
     private ToolBar selectionBar;
     private SelectionBarController selectionBarController;
-    private ClientPageController clientPageController;
+    private ClientsPageController clientsPageController;
     private HomePageController homePageController;
     private AnchorPane homePage;
     private BorderPane patientPage;
-    //    private
-    //Size of the window
     private static final double WINDOW_X = 800;
     private static final double WINDOW_Y = 600;
 
@@ -34,6 +32,9 @@ public class MainView {
         LoginView loginView = new LoginView(stage, this);
     }
 
+    //
+    // initialize clinic interface (mainView)
+    //
     public void initializeClinicInterface(UserModel userModel) {
         this.userModel = userModel;
         drawBackground();
@@ -44,34 +45,38 @@ public class MainView {
         stage.show();
     }
 
+    //
+    // set up the background specifications
+    //
     public void drawBackground() {
         Scene scene = new Scene(root, WINDOW_X, WINDOW_Y);
+        stage.setMinWidth(780.0);
+        stage.setMinHeight(550.0);
         stage.setScene(scene);
     }
 
+    //
+    // get the tool bar for main page set up
+    //
     public void drawToolBar() {
         if (selectionBar != null) {
             System.err.println("Already initialized selectionBar");
             return;
         }
         try {
-            // linking fxml to controller
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/selection_bar.fxml"));
             selectionBar = loader.load();
             selectionBarController = loader.<SelectionBarController>getController();
             selectionBarController.initSelectionBarController(this, userModel);
-
-            // not linking but passes data
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/selection_bar.fxml"));
-//            selectionBarController = new SelectionBarController(this, viewModel);
-//            loader.setController(selectionBarController);
-//            selectionBar = loader.load();
         } catch (IOException io) {
             System.out.println("selection bar not loaded");
         }
         root.setTop(selectionBar);
     }
 
+    //
+    // init home page
+    //
     public void initHomePage() {
         if (homePage != null) {
             System.err.println("Already initialized homepage");
@@ -87,31 +92,34 @@ public class MainView {
         }
     }
 
+    //
+    // set home page as mainView
+    //
     public void setHomePage() {
         root.setCenter(homePage);
     }
 
+    //
+    // initialize client page
+    //
     public void initClientPage() {
         if (patientPage != null) {
             System.err.println("Already initialized patientPage");
             return;
         }
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/client_page.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/clients_page.fxml"));
             patientPage = loader.load();
-            clientPageController = loader.<ClientPageController>getController();
-            clientPageController.initClientPageController(this, userModel);
-
-            // not linking but passes data
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/client_page.fxml"));
-//            patientPageController = new PatientPageController(this, viewModel);
-//            loader.setController(patientPageController);
-//            patientPage = loader.load();
+            clientsPageController = loader.<ClientsPageController>getController();
+            clientsPageController.initClientPageController(this, userModel);
         } catch (IOException io) {
-            System.out.println("patient page not loaded");
+            System.out.println("client page not loaded");
         }
     }
 
+    //
+    // set clientPage as mainView
+    //
     public void setClientPage() {
         root.setCenter(patientPage);
     }

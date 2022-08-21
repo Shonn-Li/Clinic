@@ -66,6 +66,8 @@ public class TransactionModel {
         this.amount = new SimpleDoubleProperty(amount);
         this.purpose = new SimpleStringProperty(purpose);
         try {
+                connection = DriverManager.getConnection(url, dbUser, dbPassword);
+                statement = connection.createStatement();
             queryOutputStatus = statement.executeUpdate(createTransactionQuery());
             queryOutput = statement.executeQuery(selectTransactionQueryOnDate(transactionDate));
             queryOutput.next();
@@ -106,7 +108,7 @@ public class TransactionModel {
 
     public void updateIntFieldInSQL(String field, int value) {
         try {
-            queryOutputStatus = statement.executeUpdate("UPDATE transaction SET " + field + " = " + value + " WHERE transaction_id = " + getTransactionId() + "; ");
+            queryOutputStatus = statement.executeUpdate("UPDATE transaction SET " + field + " = '" + value + "' WHERE transaction_id = '" + getTransactionId() + "'; ");
         } catch (SQLException e) {
             System.err.println("update " + field + " for transaction failed in SQL");
         }
@@ -114,7 +116,7 @@ public class TransactionModel {
 
     public void updateStringFieldInSQL(String field, String value) {
         try {
-            queryOutputStatus = statement.executeUpdate("UPDATE transaction SET " + field + " = " + value + " WHERE transaction_id = " + getTransactionId() + "; ");
+            queryOutputStatus = statement.executeUpdate("UPDATE transaction SET " + field + " = '" + value + "' WHERE transaction_id = '" + getTransactionId() + "'; ");
         } catch (SQLException e) {
             System.err.println("update " + field + " for transaction failed in SQL");
         }
@@ -122,7 +124,7 @@ public class TransactionModel {
 
     public void updateDoubleFieldInSQL(String field, double value) {
         try {
-            queryOutputStatus = statement.executeUpdate("UPDATE transaction SET " + field + " = " + value + " WHERE transaction_id = " + getTransactionId() + "; ");
+            queryOutputStatus = statement.executeUpdate("UPDATE transaction SET " + field + " = '" + value + "' WHERE transaction_id = '" + getTransactionId() + "'; ");
         } catch (SQLException e) {
             System.err.println("update " + field + " for transaction failed in SQL");
         }
@@ -130,7 +132,7 @@ public class TransactionModel {
 
     public void updateDateFieldInSQL(String field, Date value) {
         try {
-            queryOutputStatus = statement.executeUpdate("UPDATE transaction SET " + field + " = " + value + " WHERE transaction_id = " + getTransactionId() + "; ");
+            queryOutputStatus = statement.executeUpdate("UPDATE transaction SET " + field + " = '" + value + "' WHERE transaction_id = '" + getTransactionId() + "'; ");
         } catch (SQLException e) {
             System.err.println("update " + field + " for transaction failed in SQL");
         }

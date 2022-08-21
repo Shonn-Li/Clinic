@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox minWidth="780.0" prefHeight="817.0" prefWidth="879.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.clinic.controller.ClientInfoPageController">
+<HBox minWidth="780.0" prefHeight="817.0" prefWidth="879.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.clinic.controller.ClientNewPageController">
    <children>
       <Separator prefWidth="200.0" HBox.hgrow="ALWAYS" />
       <ScrollPane fx:id="scrollPane" fitToHeight="true" maxWidth="Infinity" minWidth="-Infinity" prefHeight="834.0" prefWidth="716.0" HBox.hgrow="NEVER">
@@ -22,31 +22,34 @@
                <children>
                   <VBox layoutX="14.0" layoutY="30.0" prefHeight="48.0" prefWidth="333.0">
                      <children>
-                        <Label text="First Name">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                        </Label>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="First Name" />
+                              <Label text="*" textFill="#e80505" />
+                           </children>
+                        </HBox>
                         <TextField fx:id="firstNameField" prefHeight="26.0" prefWidth="187.0" />
                      </children>
                   </VBox>
                   <VBox layoutX="367.0" layoutY="30.0" prefHeight="48.0" prefWidth="333.0">
                      <children>
-                        <Label text="Phone Number">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                        </Label>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Phone Number" />
+                              <Label text="*" textFill="#e80505" />
+                           </children>
+                        </HBox>
                         <TextField fx:id="phoneNumberField" prefHeight="26.0" prefWidth="287.0" />
                      </children>
                   </VBox>
                   <VBox layoutX="14.0" layoutY="95.0" prefHeight="48.0" prefWidth="333.0">
                      <children>
-                        <Label text="Last Name">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                        </Label>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Last Name" />
+                              <Label text="*" textFill="#e80505" />
+                           </children>
+                        </HBox>
                         <TextField fx:id="lastNameField" prefHeight="26.0" prefWidth="187.0" />
                      </children>
                   </VBox>
@@ -62,11 +65,12 @@
                   </VBox>
                   <VBox layoutX="14.0" layoutY="162.0" prefHeight="48.0" prefWidth="333.0">
                      <children>
-                        <Label text="Gender">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                        </Label>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Gender" />
+                              <Label text="*" textFill="#e80505" />
+                           </children>
+                        </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <RadioButton fx:id="maleBtn" mnemonicParsing="false" onAction="#genderClicked" text="Male" />
@@ -84,31 +88,34 @@
                   </VBox>
                   <VBox layoutX="367.0" layoutY="162.0" prefHeight="48.0" prefWidth="333.0">
                      <children>
-                        <Label text="Email">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                        </Label>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Email" />
+                              <Label text="*" textFill="#e80505" />
+                           </children>
+                        </HBox>
                         <TextField fx:id="emailField" prefHeight="26.0" prefWidth="287.0" />
                      </children>
                   </VBox>
                   <VBox layoutX="14.0" layoutY="233.0" prefHeight="48.0" prefWidth="333.0">
                      <children>
-                        <Label text="Date Of Birth">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                        </Label>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Date of Birth" />
+                              <Label text="*" textFill="#e80505" />
+                           </children>
+                        </HBox>
                         <DatePicker fx:id="dateOfBirthField" prefHeight="26.0" prefWidth="370.0" />
                      </children>
                   </VBox>
                   <VBox layoutX="367.0" layoutY="233.0" prefHeight="48.0" prefWidth="333.0">
                      <children>
-                        <Label text="Address">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                        </Label>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Address" />
+                              <Label text="*" textFill="#e80505" />
+                           </children>
+                        </HBox>
                         <TextField fx:id="addressField" prefHeight="26.0" prefWidth="287.0" />
                      </children>
                   </VBox>
@@ -182,8 +189,8 @@
                         <TextArea fx:id="treatmentField" prefHeight="117.0" prefWidth="686.0" />
                      </children>
                   </VBox>
-                  <Button fx:id="returnBtn" layoutX="494.0" layoutY="758.0" mnemonicParsing="false" onAction="#onClickReturnBtn" prefHeight="29.0" prefWidth="80.0" text="Return" />
-                  <Button fx:id="updateBtn" layoutX="589.0" layoutY="758.0" mnemonicParsing="false" onAction="#onClickUpdateBtn" prefHeight="29.0" prefWidth="80.0" text="Update" />
+                  <Button fx:id="cancelBtn" layoutX="494.0" layoutY="758.0" mnemonicParsing="false" onAction="#onClickCancelBtn" prefHeight="29.0" prefWidth="80.0" text="Cancel" />
+                  <Button fx:id="registerBtn" layoutX="589.0" layoutY="758.0" mnemonicParsing="false" onAction="#onClickRegisterBtn" prefHeight="29.0" prefWidth="80.0" text="Register" />
                </children>
             </AnchorPane>
          </content>

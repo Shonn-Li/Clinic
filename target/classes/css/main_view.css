@@ -10,24 +10,17 @@
     divider-color         : #BDBDBD; 
 }
 
-
 .root {
     -fx-background-color: default-primary-color
 }
-
-
-.label
-{
-    -fx-font: bold ;
-    
+.button {
+    background-color: light-primary-color;
 }
 
-.textfield-indicator
-{
-    font-weight: bold;
+.button:hover {
+    color: rgba(255, 255, 255, 0.816);
 }
 
-.anchor-pane
-{
-    -fx-background-color: light-primary-color
+.button:active {
+    background-color: rgba(255, 255, 255, 0.7);
 }

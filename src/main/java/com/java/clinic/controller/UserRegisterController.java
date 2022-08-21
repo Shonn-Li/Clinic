@@ -45,15 +45,24 @@ public class UserRegisterController {
     @FXML
     private ImageView rePasswordWrongImg;
 
+    //
+    // initialize the controller
+    //
     public void initUserRegisterController(LoginView loginView) {
         this.loginView = loginView;
     }
 
+    //
+    // go back to login page
+    //
     @FXML
     void cancelRegistration(ActionEvent event) {
         loginView.setStageToLogin();
     }
 
+    //
+    // register a new user, create a user model and go to main page
+    //
     @FXML
     void registerUser(ActionEvent event) {
         System.out.println("registration Info");
