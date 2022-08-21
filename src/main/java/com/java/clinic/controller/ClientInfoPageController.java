@@ -117,6 +117,59 @@ public class ClientInfoPageController {
 
     @FXML
     void onClickUpdateBtn(ActionEvent event) {
+        boolean fieldEmpty = false;
+        if (firstNameField.getText() == "") {
+            firstNameField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
+            fieldEmpty = true;
+        } else {
+            firstNameField.setStyle("-fx-border-width: 0px ;");
+        }
+        if (lastNameField.getText() == "") {
+            lastNameField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
+            fieldEmpty = true;
+        } else {
+            lastNameField.setStyle("-fx-border-width: 0px ;");
+        }
+        if (phoneNumberField.getText() == "") {
+            phoneNumberField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
+            fieldEmpty = true;
+        } else {
+            phoneNumberField.setStyle("-fx-border-width: 0px ;");
+        }
+        if (emailField.getText() == "") {
+            emailField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
+            fieldEmpty = true;
+        } else {
+            emailField.setStyle("-fx-border-width: 0px ;");
+        }
+        if (addressField.getText() == "") {
+            addressField.setStyle("-fx-text-box-border: red ; -fx-focus-color: red ;");
+            fieldEmpty = true;
+        } else {
+            addressField.setStyle("-fx-border-width: 0px ;");
+        }
+
+        if (dateOfBirthField.getValue() == null) {
+            dateOfBirthField.setStyle("-fx-border-color: red; -fx-background-color: lightgrey; -fx-focus-color: red ;");
+            fieldEmpty = true;
+        } else {
+            dateOfBirthField.setStyle("-fx-border-width: 0px ;");
+        }
+        if (gender == null) {
+            maleBtn.setStyle("-fx-border-color:  red;" +
+                    "  -fx-border-width: 1px;" +
+                    "  -fx-border-style: solid;");
+            femaleBtn.setStyle("-fx-border-color:  red;" +
+                    "  -fx-border-width: 1px;" +
+                    "  -fx-border-style: solid;");
+            fieldEmpty = true;
+        } else {
+            maleBtn.setStyle( "  -fx-border-width: 0px;");
+            femaleBtn.setStyle( "  -fx-border-width: 0px;" );
+        }
+        if (fieldEmpty == true) {
+            return;
+        }
         clientModel.setFirstname(firstNameField.getText());
         clientModel.setPhoneNumber(phoneNumberField.getText());
         clientModel.setLastname(lastNameField.getText());

@@ -5,19 +5,21 @@ import com.java.clinic.exception.UserPasswordOrNameIncorrectException;
 import com.java.clinic.exception.UsernameAlreadyExistException;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
-import java.util.List;
 
 
 public class UserModel {
     private SimpleStringProperty username;
     private SimpleStringProperty password;
     private SimpleStringProperty email;
+    private SimpleStringProperty userFullName;
+    private SimpleStringProperty userFirstName;
+    private SimpleStringProperty userLastName;
+    private SimpleStringProperty phoneNumber;
     private SimpleIntegerProperty userId;
     private SimpleListProperty<ClientModel> clientModels;
     private ResultSet queryOutput;
@@ -25,6 +27,8 @@ public class UserModel {
     private String url = "jdbc:mysql://localhost:3306/clinic";
     private String dbUser = "root";
     private String dbPassword = "Shonnlee2003";
+    private Connection connection;
+    private Statement statement;
     private Boolean firstTimeUser = false;
 
     // userModel for log in
@@ -44,6 +48,10 @@ public class UserModel {
                 System.out.println("I");
                 this.email = new SimpleStringProperty(queryOutput.getString("email"));
                 this.userId = new SimpleIntegerProperty(queryOutput.getInt("user_id"));
+                this.userFirstName = new SimpleStringProperty(queryOutput.getString("user_first_name"));
+                this.userLastName = new SimpleStringProperty(queryOutput.getString("user_last_name"));
+                this.phoneNumber = new SimpleStringProperty(queryOutput.getString("phone"));
+                this.userFullName = new SimpleStringProperty(getUserFirstName() + " " + getUserLastName());
             }
         } catch (SQLException e) {
             System.out.println("connection to sql failed during login");
@@ -57,9 +65,13 @@ public class UserModel {
         this.username = new SimpleStringProperty(username);
         this.password = new SimpleStringProperty(password);
         this.email = new SimpleStringProperty(email);
+        this.userFirstName = new SimpleStringProperty("");
+        this.userLastName = new SimpleStringProperty("");
+        this.phoneNumber = new SimpleStringProperty("");
+        this.userFullName = new SimpleStringProperty(getUserFirstName() + " " + getUserLastName());
         try {
-            Connection connection = DriverManager.getConnection(url, dbUser, dbPassword);
-            Statement statement = connection.createStatement();
+            connection = DriverManager.getConnection(url, dbUser, dbPassword);
+            statement = connection.createStatement();
             queryOutput = statement.executeQuery(searchUserNameQuery(username));
             if (queryOutput.next()) {
                 throw new UsernameAlreadyExistException();
@@ -68,7 +80,10 @@ public class UserModel {
             if (queryOutput.next()) {
                 throw new EmailAlreadyExistException();
             }
-            queryOutputStatus = statement.executeUpdate(createUserQuery(username, password, email));
+            statement.executeUpdate(createUserQuery(), Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = statement.getGeneratedKeys();
+            rs.next();
+            this.userId = new SimpleIntegerProperty(rs.getInt(1));
         } catch (SQLException e) {
             System.out.println("connection to sql failed");
         }
@@ -79,11 +94,11 @@ public class UserModel {
     public void initClientModels() {
         try {
             ObservableList<ClientModel> clientModelList = FXCollections.observableArrayList();;
-            Connection connection = DriverManager.getConnection(url, dbUser, dbPassword);
-            Statement statement = connection.createStatement();
+            connection = DriverManager.getConnection(url, dbUser, dbPassword);
+            statement = connection.createStatement();
             queryOutput = statement.executeQuery(selectAllClientIdQuery(this.getUserId()));
             while (queryOutput.next()) {
-                clientModelList.add(new ClientModel(queryOutput.getInt("client_id")));
+                clientModelList.add(new ClientModel(queryOutput.getInt("client_id"), this));
             }
             clientModels = new SimpleListProperty<ClientModel>(clientModelList);
         } catch (SQLException e) {
@@ -106,8 +121,19 @@ public class UserModel {
         return "SELECT * FROM user WHERE username = '" + username + "';";
     }
 
-    public String createUserQuery(String username, String password, String email) {
-        return "INSERT INTO user(username, password, email) VALUES('" + username + "', '" + password + "', '" + email + "');";
+    public String createUserQuery() {
+        return "INSERT INTO user(username, password, email, user_first_name, user_last_name, phone) VALUES('" +
+                getUsername() + "', '" + getPassword() + "', '" +
+                getEmail() + "', '" + getUserFirstName() + "', '" + getUserLastName() + "', '" +
+                getPhoneNumber() + "');";
+    }
+
+    public void updateStringFieldInSQL(String field, String value) {
+        try {
+            queryOutputStatus = statement.executeUpdate("UPDATE user SET " + field + " = '" + value + "' WHERE user_id = '" + getUserId() + "'; ");
+        } catch (SQLException e) {
+            System.err.println("update " + field + " for transaction failed in SQL");
+        }
     }
 
     public Boolean isFirstTimeUser() {
@@ -123,6 +149,7 @@ public class UserModel {
     }
 
     public void setUsername(String username) {
+        updateStringFieldInSQL("username", username);
         this.username.set(username);
     }
 
@@ -135,6 +162,9 @@ public class UserModel {
     }
 
     public void setPassword(String password) {
+
+
+        updateStringFieldInSQL("password", password);
         this.password.set(password);
     }
 
@@ -147,6 +177,7 @@ public class UserModel {
     }
 
     public void setEmail(String email) {
+        updateStringFieldInSQL("email", email);
         this.email.set(email);
     }
 
@@ -172,5 +203,52 @@ public class UserModel {
 
     public void setClientModels(ObservableList<ClientModel> clientModels) {
         this.clientModels.set(clientModels);
+    }
+
+    public String getUserFirstName() {
+        return userFirstName.get();
+    }
+
+    public SimpleStringProperty userFirstNameProperty() {
+        return userFirstName;
+    }
+
+    public void setUserFirstName(String userFirstName) {
+        updateStringFieldInSQL("user_first_name", userFirstName);
+        this.userFirstName.set(userFirstName);
+    }
+
+    public String getUserLastName() {
+        return userLastName.get();
+    }
+
+    public SimpleStringProperty userLastNameProperty() {
+        return userLastName;
+    }
+
+    public void setUserLastName(String userLastName) {
+        updateStringFieldInSQL("user_last_name", userLastName);
+        this.userLastName.set(userLastName);
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber.get();
+    }
+
+    public SimpleStringProperty phoneNumberProperty() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        updateStringFieldInSQL("phone", phoneNumber);
+        this.phoneNumber.set(phoneNumber);
+    }
+
+    public String getUserFullName() {
+        return getUserFirstName() + " " + getUserLastName();
+    }
+
+    public SimpleStringProperty userFullNameProperty() {
+        return userFullName;
     }
 }

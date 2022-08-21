@@ -21,7 +21,7 @@ public class MainView {
     private SelectionBarController selectionBarController;
     private ClientsPageController clientsPageController;
     private HomePageController homePageController;
-    private AnchorPane homePage;
+    private BorderPane homePage;
     private BorderPane patientPage;
     private static final double WINDOW_X = 800;
     private static final double WINDOW_Y = 600;
@@ -41,7 +41,7 @@ public class MainView {
         drawToolBar();
         initHomePage();
         initClientPage();
-        setHomePage();
+        setClientPage();
         stage.show();
     }
 

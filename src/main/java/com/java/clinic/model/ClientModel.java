@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import java.sql.*;
 
 public class ClientModel {
+    private UserModel userModel;
     private SimpleIntegerProperty clientId;
     private SimpleStringProperty fullName;
     private SimpleStringProperty firstname;
@@ -39,8 +40,9 @@ public class ClientModel {
     private ResultSet queryOutput;
     private int queryOutputStatus;
 
-    public ClientModel(int clientId) {
+    public ClientModel(int clientId, UserModel userModel) {
         try {
+            this.userModel = userModel;
             this.clientId = new SimpleIntegerProperty(clientId);
             connection = DriverManager.getConnection(url, dbUser, dbPassword);
             statement = connection.createStatement();
@@ -76,7 +78,8 @@ public class ClientModel {
     }
 
     // all values must be not null!
-    public ClientModel(String firstname, String lastname, String gender, Date dateOfBirth, String email, String phoneNumber, String address, String MSP, String emergencyName, String emergencyPhone, String doctorName, String doctorPhone, Timestamp lastVisit, String medicalHistory, String symptom, String treatmentPlan, int provider_id) {
+    public ClientModel(UserModel userModel, String firstname, String lastname, String gender, Date dateOfBirth, String email, String phoneNumber, String address, String MSP, String emergencyName, String emergencyPhone, String doctorName, String doctorPhone, Timestamp lastVisit, String medicalHistory, String symptom, String treatmentPlan, int provider_id) {
+        this.userModel = userModel;
         this.firstname = new SimpleStringProperty(firstname);
         this.lastname = new SimpleStringProperty(lastname);
         this.fullName = new SimpleStringProperty(getFirstname() + " " +  getLastname());
@@ -100,10 +103,10 @@ public class ClientModel {
         try {
             connection = DriverManager.getConnection(url, dbUser, dbPassword);
             statement = connection.createStatement();
-            queryOutputStatus = statement.executeUpdate(createFullClientQuery());
-            queryOutput = statement.executeQuery(selectClientQueryOnEmail(email));
-            queryOutput.next();
-            this.clientId = new SimpleIntegerProperty(queryOutput.getInt("client_id"));
+            statement.executeUpdate(createFullClientQuery(), Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = statement.getGeneratedKeys();
+            rs.next();
+            this.clientId = new SimpleIntegerProperty(rs.getInt(1));
         } catch (SQLException e) {
             System.err.println("create client failed in SQL");
         }
@@ -117,7 +120,7 @@ public class ClientModel {
             Statement statement = connection.createStatement();
             queryOutput = statement.executeQuery(selectAllTransactionIdQuery(this.getClientId()));
             while (queryOutput.next()) {
-                transactionModelList.add(new TransactionModel(queryOutput.getInt("transaction_id")));
+                transactionModelList.add(new TransactionModel(queryOutput.getInt("transaction_id"), this));
             }
             transactionModels = new SimpleListProperty<TransactionModel>(transactionModelList);
         } catch (SQLException e) {
@@ -208,8 +211,6 @@ public class ClientModel {
             System.err.println("update " + field + " failed in SQL");
         }
     }
-
-
     public String getFullName() {
         return fullName.get();
     }
@@ -219,7 +220,7 @@ public class ClientModel {
     }
 
     public void setFullName() {
-        this.fullName.set(firstname.get() + lastname.get());
+        this.fullName.set(firstname.get() + " " + lastname.get());
     }
 
     public String getFirstname() {
@@ -482,5 +483,13 @@ public class ClientModel {
 
     public void setTransactionModels(ObservableList<TransactionModel> transactionModels) {
         this.transactionModels.set(transactionModels);
+    }
+
+    public UserModel getUserModel() {
+        return userModel;
+    }
+
+    public void setUserModel(UserModel userModel) {
+        this.userModel = userModel;
     }
 }

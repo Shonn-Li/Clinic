@@ -1,6 +1,7 @@
 package com.java.clinic.controller;
 
 import com.java.clinic.model.ClientModel;
+import com.java.clinic.model.UserModel;
 import com.java.clinic.view.ClientView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +16,7 @@ public class ClientNewPageController {
     private ClientModel clientModel;
     private ClientView clientView;
     private String gender;
-    private int userId;
+    private UserModel userModel;
     @FXML
     private TextField MSPNumberField;
 
@@ -74,9 +75,9 @@ public class ClientNewPageController {
     private RadioButton femaleBtn;
 
 
-    public void initClientNewPageController(ClientView clientView, int userId) {
+    public void initClientNewPageController(ClientView clientView, UserModel userModel) {
         this.clientView = clientView;
-        this.userId = userId;
+        this.userModel = userModel;
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         phoneNumberField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -150,12 +151,12 @@ public class ClientNewPageController {
             return;
         }
 
-        clientView.clientNewPageFinished(new ClientModel(firstNameField.getText(), lastNameField.getText(), gender,
+        clientView.clientNewPageFinished(new ClientModel(userModel, firstNameField.getText(), lastNameField.getText(), gender,
                 java.sql.Date.valueOf(dateOfBirthField.getValue()), emailField.getText(), phoneNumberField.getText(),
                 addressField.getText(), MSPNumberField.getText(), emergencyContactNameField.getText(),
                 emergencyContactPhoneNumberField.getText(), familyDoctorNameField.getText(),
                 familyDoctorPhoneNumberField.getText(), new Timestamp(System.currentTimeMillis()),
-                historyField.getText(), symptomField.getText(), treatmentField.getText(), userId));
+                historyField.getText(), symptomField.getText(), treatmentField.getText(), userModel.getUserId()));
     }
 
     @FXML

@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import java.sql.*;
 
 public class TransactionModel {
+    private ClientModel clientModel;
     private SimpleIntegerProperty transactionId;
     private SimpleStringProperty payeeName;
     private SimpleStringProperty payeeEmail;
@@ -16,9 +17,10 @@ public class TransactionModel {
     private SimpleStringProperty payerPhone;
     private SimpleIntegerProperty payeeId;
     private SimpleIntegerProperty payerId;
-    private Date transactionDate; // format ddmmyyyy // last payment
+    private Timestamp transactionDate; // format ddmmyyyy // last payment
     private SimpleDoubleProperty amount; // remaining times for the treatment plan
     private SimpleStringProperty purpose;
+    private SimpleStringProperty note;
     private String url = "jdbc:mysql://localhost:3306/clinic";
     private String dbUser = "root";
     private String dbPassword = "Shonnlee2003";
@@ -27,8 +29,9 @@ public class TransactionModel {
     private ResultSet queryOutput;
     private int queryOutputStatus;
 
-    public TransactionModel(int transactionId) {
+    public TransactionModel(int transactionId, ClientModel clientModel) {
         try {
+            this.clientModel = clientModel;
             this.transactionId = new SimpleIntegerProperty(transactionId);
             connection = DriverManager.getConnection(url, dbUser, dbPassword);
             statement = connection.createStatement();
@@ -44,16 +47,18 @@ public class TransactionModel {
                 this.payerPhone = new SimpleStringProperty(queryOutput.getString("payer_phone"));
                 this.payeeId = new SimpleIntegerProperty(queryOutput.getInt("payee_id"));
                 this.payerId = new SimpleIntegerProperty(queryOutput.getInt("payer_id"));
-                this.transactionDate = queryOutput.getDate("transaction_date");
+                this.transactionDate = queryOutput.getTimestamp("transaction_date");
                 this.amount = new SimpleDoubleProperty(queryOutput.getDouble("amount"));
                 this.purpose = new SimpleStringProperty(queryOutput.getString("purpose"));
+                this.note = new SimpleStringProperty(queryOutput.getString("note"));
             }
         } catch (SQLException e) {
             System.out.println("connection to sql failed on loading transaction model");
         }
     }
 
-    public TransactionModel(String payeeName, String payeeEmail, String payeePhone, String payerName, String payerEmail, String payerPhone, int payeeId, int payerId, Date transactionDate, double amount, String purpose) {
+    public TransactionModel(ClientModel clientModel, String payeeName, String payeeEmail, String payeePhone, String payerName, String payerEmail, String payerPhone, int payeeId, int payerId, Timestamp transactionDate, double amount, String purpose, String note) {
+        this.clientModel = clientModel;
         this.payeeName = new SimpleStringProperty(payeeName);
         this.payeeEmail = new SimpleStringProperty(payeeEmail);
         this.payeePhone = new SimpleStringProperty(payeePhone);
@@ -65,13 +70,15 @@ public class TransactionModel {
         this.transactionDate = transactionDate;
         this.amount = new SimpleDoubleProperty(amount);
         this.purpose = new SimpleStringProperty(purpose);
+        this.note = new SimpleStringProperty(note);
         try {
-                connection = DriverManager.getConnection(url, dbUser, dbPassword);
-                statement = connection.createStatement();
-            queryOutputStatus = statement.executeUpdate(createTransactionQuery());
-            queryOutput = statement.executeQuery(selectTransactionQueryOnDate(transactionDate));
-            queryOutput.next();
-            this.transactionId = new SimpleIntegerProperty(queryOutput.getInt("transaction_id"));
+            connection = DriverManager.getConnection(url, dbUser, dbPassword);
+            statement = connection.createStatement();
+            statement.executeUpdate(createTransactionQuery(), Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = statement.getGeneratedKeys();
+            rs.next();
+            this.transactionId = new SimpleIntegerProperty(rs.getInt(1));
+
         } catch (SQLException e) {
             System.err.println("create transaction failed in SQL");
         }
@@ -85,11 +92,11 @@ public class TransactionModel {
         }
     }
     public String selectTransactionQuery(int transactionId) {
-        return "SELECT * FROM transaction where transaction_id = " + transactionId + ";";
+        return "SELECT * FROM transaction where transaction_id = '" + transactionId + "';";
     }
 
-    public String selectTransactionQueryOnDate(Date transactionDate) {
-        return "SELECT * FROM transaction where email = " + transactionDate + ";";
+    public String selectTransactionQueryOnDate(Timestamp transactionDate) {
+        return "SELECT * FROM transaction where transaction_date = '" + transactionDate + "';";
     }
 
     public String createTransactionQuery() {
@@ -130,7 +137,8 @@ public class TransactionModel {
         }
     }
 
-    public void updateDateFieldInSQL(String field, Date value) {
+
+    public void updateTimestampFieldInSQL(String field, Timestamp value) {
         try {
             queryOutputStatus = statement.executeUpdate("UPDATE transaction SET " + field + " = '" + value + "' WHERE transaction_id = '" + getTransactionId() + "'; ");
         } catch (SQLException e) {
@@ -256,12 +264,12 @@ public class TransactionModel {
         this.payerId.set(payerId);
     }
 
-    public Date getTransactionDate() {
+    public Timestamp getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(Date transactionDate) {
-        updateDateFieldInSQL("transaction_date", transactionDate);
+    public void setTransactionDate(Timestamp transactionDate) {
+        updateTimestampFieldInSQL("transaction_date", transactionDate);
         this.transactionDate = transactionDate;
     }
 
@@ -289,5 +297,26 @@ public class TransactionModel {
     public void setPurpose(String purpose) {
         updateStringFieldInSQL("purpose", purpose);
         this.purpose.set(purpose);
+    }
+
+    public ClientModel getClientModel() {
+        return clientModel;
+    }
+
+    public void setClientModel(ClientModel clientModel) {
+        this.clientModel = clientModel;
+    }
+
+    public String getNote() {
+        return note.get();
+    }
+
+    public SimpleStringProperty noteProperty() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        updateStringFieldInSQL("note", note);
+        this.note.set(note);
     }
 }

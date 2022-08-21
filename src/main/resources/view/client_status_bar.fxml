@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox minHeight="-Infinity" maxHeight="Infinity" prefHeight="84.0" prefWidth="553.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.clinic.controller.ClientStatusBarController">
+<VBox maxHeight="Infinity" minHeight="-Infinity" prefHeight="84.0" prefWidth="553.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.clinic.controller.ClientStatusBarController">
    <children>
       <AnchorPane prefHeight="45.0" prefWidth="553.0">
          <children>
@@ -25,9 +25,9 @@
       </AnchorPane>
       <ToolBar prefHeight="40.0" prefWidth="388.0">
          <items>
-            <Button mnemonicParsing="false" style="-fx-background-color: transparent;" text="Appointments" />
-            <Button mnemonicParsing="false" style="-fx-background-color: transparenttransparent;" text="Patient Info" />
-            <Button mnemonicParsing="false" style="-fx-background-color: transparenttransparent;" text="Transation History" />
+            <Button fx:id="appointmentsBtn" mnemonicParsing="false" onAction="#onClickAppointments" style="-fx-background-color: transparent;" text="Appointments" />
+            <Button fx:id="patientInfoBtn" mnemonicParsing="false" onAction="#onClickPatientInfo" style="-fx-background-color: transparent;" text="Patient Info" />
+            <Button fx:id="transactionHistoryBtn" mnemonicParsing="false" onAction="#onClickTransactionHistory" style="-fx-background-color: transparent;" text="Transation History" />
          </items>
       </ToolBar>
    </children>

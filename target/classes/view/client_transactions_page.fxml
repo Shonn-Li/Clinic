@@ -10,16 +10,15 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="400.0" prefWidth="766.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.clinic.controller.ClientsPageController">
+<BorderPane prefHeight="400.0" prefWidth="766.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.clinic.controller.ClientTransactionsPageController">
    <center>
       <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="name" prefWidth="70.0" text="Name" />
-          <TableColumn fx:id="gender" prefWidth="58.0" text="Gender" />
-          <TableColumn fx:id="phoneNumber" prefWidth="97.0" text="Phone Number" />
-          <TableColumn fx:id="currentTreatmentPlan" prefWidth="173.0" text="Current Treatment Plan" />
-          <TableColumn fx:id="dateOfBirth" prefWidth="176.0" text="Date Of Birth" />
-          <TableColumn fx:id="lastVisited" prefWidth="191.0" text="last visit" />
+          <TableColumn fx:id="transactionDate" prefWidth="162.0" text="Transaction Date" />
+          <TableColumn fx:id="amount" minWidth="0.0" prefWidth="97.0" text="Amount" />
+          <TableColumn fx:id="purpose" prefWidth="261.0" text="Purpose" />
+          <TableColumn fx:id="payee" prefWidth="131.0" text="payee" />
+          <TableColumn fx:id="payer" prefWidth="114.0" text="payer" />
         </columns>
       </TableView>
    </center>

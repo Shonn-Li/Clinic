@@ -10,21 +10,21 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="400.0" prefWidth="766.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.clinic.controller.ClientsPageController">
+<BorderPane prefHeight="400.0" prefWidth="823.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.clinic.controller.ClientsPageController">
    <center>
-      <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="table" prefHeight="343.0" prefWidth="870.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="name" prefWidth="70.0" text="Name" />
-          <TableColumn fx:id="gender" prefWidth="58.0" text="Gender" />
-          <TableColumn fx:id="phoneNumber" prefWidth="97.0" text="Phone Number" />
-          <TableColumn fx:id="currentTreatmentPlan" prefWidth="173.0" text="Current Treatment Plan" />
-          <TableColumn fx:id="dateOfBirth" prefWidth="176.0" text="Date Of Birth" />
-          <TableColumn fx:id="lastVisited" prefWidth="191.0" text="last visit" />
+          <TableColumn fx:id="name" prefWidth="98.0" text="Name" />
+          <TableColumn fx:id="gender" minWidth="0.0" prefWidth="52.0" text="Gender" />
+          <TableColumn fx:id="phoneNumber" prefWidth="166.0" text="Phone Number" />
+          <TableColumn fx:id="currentTreatmentPlan" prefWidth="240.0" text="Current Treatment Plan" />
+          <TableColumn fx:id="dateOfBirth" prefWidth="126.0" text="Date Of Birth" />
+          <TableColumn fx:id="lastVisited" prefWidth="140.0" text="last visit" />
         </columns>
       </TableView>
    </center>
    <top>
-      <HBox prefHeight="53.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="57.0" prefWidth="834.0" BorderPane.alignment="CENTER">
          <children>
             <TextField fx:id="searchBarInput" prefHeight="37.0" prefWidth="239.0" HBox.hgrow="ALWAYS">
                <promptText>Search...</promptText>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox minWidth="441.0" prefHeight="403.0" prefWidth="456.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.clinic.controller.ClientTransactionInfoPageController">
+   <children>
+      <Separator prefWidth="200.0" HBox.hgrow="ALWAYS" />
+      <ScrollPane fx:id="scrollPane" fitToHeight="true" maxWidth="Infinity" minWidth="-Infinity" prefHeight="231.0" prefWidth="371.0" HBox.hgrow="NEVER">
+         <content>
+            <AnchorPane prefHeight="385.0" prefWidth="369.0">
+               <children>
+                  <VBox layoutX="14.0" layoutY="30.0" prefHeight="48.0" prefWidth="333.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Purpose" />
+                              <Label text="*" textFill="#e80505" />
+                           </children>
+                        </HBox>
+                        <TextField fx:id="purposeField" prefHeight="26.0" prefWidth="187.0" />
+                     </children>
+                  </VBox>
+                  <VBox layoutX="14.0" layoutY="95.0" prefHeight="48.0" prefWidth="333.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Amount" />
+                              <Label text="*" textFill="#e80505" />
+                           </children>
+                        </HBox>
+                        <TextField fx:id="amountField" prefHeight="26.0" prefWidth="187.0" />
+                     </children>
+                  </VBox>
+                  <Button fx:id="returnBtn" layoutX="181.0" layoutY="348.0" mnemonicParsing="false" onAction="#onClickReturnBtn" prefHeight="29.0" prefWidth="80.0" text="Return" />
+                  <Button fx:id="updateBtn" layoutX="276.0" layoutY="348.0" mnemonicParsing="false" onAction="#onClickUpdateBtn" prefHeight="29.0" prefWidth="71.0" text="Update" />
+                  <VBox layoutX="15.0" layoutY="158.0" prefHeight="167.0" prefWidth="333.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Note" />
+                           </children>
+                        </HBox>
+                        <TextArea fx:id="noteField" prefHeight="228.0" prefWidth="333.0" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
+      <Separator prefWidth="200.0" HBox.hgrow="ALWAYS" />
+   </children>
+</HBox>

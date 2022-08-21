@@ -95,7 +95,7 @@ public class ClientsPageController implements Initializable {
 
     @FXML
     void onClickNewBtn(ActionEvent event) {
-        clientView = new ClientView(this, userModel.getUserId());
+        clientView = new ClientView(this, userModel);
     }
 
     public void newClientModelCreated(ClientModel clientModel) {
