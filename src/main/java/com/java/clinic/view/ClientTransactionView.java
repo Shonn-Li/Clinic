@@ -97,4 +97,6 @@ public class ClientTransactionView {
     public void setClientTransactionNewPage() {
         root.setCenter(clientTransactionNewPage);
     }
+
+
 }

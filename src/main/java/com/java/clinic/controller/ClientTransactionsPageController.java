@@ -3,6 +3,9 @@ import com.java.clinic.model.ClientModel;
 import com.java.clinic.model.TransactionModel;
 import com.java.clinic.view.ClientTransactionView;
 import com.java.clinic.view.ClientView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +24,7 @@ public class ClientTransactionsPageController implements Initializable {
     private ClientModel clientModels;
     private ClientView clientView;
     private ObservableList<TransactionModel> list;
+    private ObservableList<TransactionModel> filteredList = FXCollections.observableArrayList();
     private ClientTransactionView clientTransactionView;
     public TextField searchBarInput;
 
@@ -75,13 +79,51 @@ public class ClientTransactionsPageController implements Initializable {
             });
             return row;
         });
+
+        searchBarInput.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+                if (newValue == "") {
+                    table.setItems(list);
+                    return;
+                }
+                filteredList.clear();
+                list.forEach((transactionModel) -> {
+                    if (meetCondition(transactionModel, newValue)) {
+                        filteredList.add(transactionModel);
+                    }
+                });
+                table.setItems(filteredList);
+
+            }
+        });
+
+    }
+
+    private boolean meetCondition(TransactionModel transactionModel, String value) {
+        if (transactionModel.getPurpose().contains(value)) {
+            return true;
+        } else if (transactionModel.getPayeeName().contains(value)) {
+            return true;
+        } else if (transactionModel.getPayerName().contains(value)) {
+            return true;
+        } else if (String.valueOf(transactionModel.getTransactionDate()).contains(value)){
+            return true;
+        } else if (String.valueOf(transactionModel.getAmount()).contains(value)){
+            return true;
+        }
+        return false;
     }
 
     @FXML
     void onClickDeleteBtn(ActionEvent event) {
         currentSelected.deleteTransactionInSQL();
-        list.remove(currentSelected);
-        clientModels.setTransactionModels(list);
+        clientModels.deleteTransactionModels(currentSelected);
+        if (filteredList.contains(currentSelected)) {
+            filteredList.remove(currentSelected);
+        }
+        list = clientModels.getTransactionModels();
     }
 
 
@@ -96,7 +138,10 @@ public class ClientTransactionsPageController implements Initializable {
     }
 
     public void newTransactionModelCreated(TransactionModel transactionModel) {
-        list.add(transactionModel);
-        clientModels.setTransactionModels(list);
+        clientModels.addTransactionModel(transactionModel);
+        if (meetCondition(transactionModel, searchBarInput.getText())) {
+            filteredList.add(transactionModel);
+        }
+        list = clientModels.getTransactionModels();
     }
 }

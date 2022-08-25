@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
+import java.util.stream.Collectors;
 
 
 public class UserModel {
@@ -22,6 +23,8 @@ public class UserModel {
     private SimpleStringProperty phoneNumber;
     private SimpleIntegerProperty userId;
     private SimpleListProperty<ClientModel> clientModels;
+    private SimpleListProperty<TransactionModel> transactionModels;
+    private SimpleListProperty<AppointmentModel> appointmentModels;
     private ResultSet queryOutput;
     private int queryOutputStatus;
     private String url = "jdbc:mysql://localhost:3306/clinic";
@@ -56,6 +59,8 @@ public class UserModel {
         } catch (SQLException e) {
             System.out.println("connection to sql failed during login");
         }
+        initTransactionModels();
+        initAppointmentModels();
         initClientModels();
     }
 
@@ -84,9 +89,14 @@ public class UserModel {
             ResultSet rs = statement.getGeneratedKeys();
             rs.next();
             this.userId = new SimpleIntegerProperty(rs.getInt(1));
+
+            System.out.println("user id:" + getUserId());
+            System.out.println("user model created");
         } catch (SQLException e) {
-            System.out.println("connection to sql failed");
+            System.out.println("userModel SQL error:" + e.getMessage());
         }
+        initTransactionModels();
+        initAppointmentModels();
         initClientModels();
     }
 
@@ -102,18 +112,56 @@ public class UserModel {
             }
             clientModels = new SimpleListProperty<ClientModel>(clientModelList);
         } catch (SQLException e) {
-            System.out.println("connection to sql failed");
+            System.out.println("userModel SQL error:" + e.getMessage());
         }
     }
 
-    public String searchUserQuery(String username, String password) {
-        return "SELECT * FROM user WHERE username = '" + username + "' AND password = '" + password + "';";
+    public void initTransactionModels() {
+        try {
+            ObservableList<TransactionModel> transactionModelList = FXCollections.observableArrayList();;
+            Connection connection = DriverManager.getConnection(url, dbUser, dbPassword);
+            Statement statement = connection.createStatement();
+            queryOutput = statement.executeQuery(selectAllTransactionIdQuery(this.getUserId()));
+            while (queryOutput.next()) {
+                transactionModelList.add(new TransactionModel(queryOutput.getInt("transaction_id"), this));
+            }
+            transactionModels = new SimpleListProperty<TransactionModel>(transactionModelList);
+        } catch (SQLException e) {
+            System.out.println("initTransactionModels failed" + ": " + e.getMessage());
+        }
+    }
+
+    public void initAppointmentModels() {
+        try {
+            ObservableList<AppointmentModel> appointmentModelList = FXCollections.observableArrayList();;
+            Connection connection = DriverManager.getConnection(url, dbUser, dbPassword);
+            Statement statement = connection.createStatement();
+            queryOutput = statement.executeQuery(selectAllAppointmentIdQuery(this.getUserId()));
+            while (queryOutput.next()) {
+                appointmentModelList.add(new AppointmentModel(queryOutput.getInt("appointment_id"), this));
+            }
+            appointmentModels = new SimpleListProperty<AppointmentModel>(appointmentModelList);
+        } catch (SQLException e) {
+            System.out.println("init Appointments failed" + ": " + e.getMessage());
+        }
+    }
+
+    public String selectAllTransactionIdQuery(int payeeId) {
+        return "SELECT transaction_id FROM transaction WHERE payee_id = '" + payeeId + "';";
+    }
+
+    public String selectAllAppointmentIdQuery(int hostId) {
+        return "SELECT appointment_id FROM appointment WHERE host_id = '" + hostId + "';";
     }
 
     public String selectAllClientIdQuery(int userId) {
         return "SELECT client_id FROM client WHERE provider_id = '" + userId + "';";
     }
 
+
+    public String searchUserQuery(String username, String password) {
+        return "SELECT * FROM user WHERE username = '" + username + "' AND password = '" + password + "';";
+    }
     public String searchUserNameQuery(String username) {
         return "SELECT * FROM user WHERE username = '" + username + "';";
     }
@@ -132,8 +180,15 @@ public class UserModel {
         try {
             queryOutputStatus = statement.executeUpdate("UPDATE user SET " + field + " = '" + value + "' WHERE user_id = '" + getUserId() + "'; ");
         } catch (SQLException e) {
-            System.err.println("update " + field + " for transaction failed in SQL");
+            System.err.println("update " + field + " for user failed in SQL" + ": " + e.getMessage());
         }
+    }
+
+    public ClientModel findClientModelById(int clientId) {
+        return getClientModels().stream()
+                .filter(customer -> String.valueOf(clientId).equals(String.valueOf(customer.getClientId())))
+                .findAny()
+                .orElse(null);
     }
 
     public Boolean isFirstTimeUser() {
@@ -250,5 +305,45 @@ public class UserModel {
 
     public SimpleStringProperty userFullNameProperty() {
         return userFullName;
+    }
+
+    public ObservableList<TransactionModel> getTransactionModels() {
+        return transactionModels.get();
+    }
+
+    public ObservableList<TransactionModel> getClientTransactionModels(int clientId) {
+        return transactionModels.filtered(t -> t.getPayerId() == clientId);
+    }
+
+    public SimpleListProperty<TransactionModel> transactionModelsProperty() {
+        return transactionModels;
+    }
+
+    public void addTransactionModel(TransactionModel transactionModel) {
+        this.transactionModels.add(transactionModel);
+    }
+
+    public void deleteTransactionModel(TransactionModel transactionModel) {
+        this.transactionModels.remove(transactionModel);
+    }
+
+    public ObservableList<AppointmentModel> getAppointmentModels() {
+        return appointmentModels.get();
+    }
+
+    public ObservableList<AppointmentModel> getClientAppointmentModels(int clientId) {
+        return appointmentModels.filtered(t -> t.getVisitorId() == clientId);
+    }
+
+    public SimpleListProperty<AppointmentModel> appointmentModelsProperty() {
+        return appointmentModels;
+    }
+
+    public void addAppointmentModel(AppointmentModel appointmentModel) {
+        this.appointmentModels.add(appointmentModel);
+    }
+
+    public void deleteAppointmentModel(AppointmentModel appointmentModel) {
+        this.appointmentModels.remove(appointmentModel);
     }
 }

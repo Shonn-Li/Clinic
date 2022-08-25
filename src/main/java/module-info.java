@@ -2,6 +2,7 @@ module com.java.clinic {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires com.calendarfx.view;
 
 
     exports com.java.clinic;

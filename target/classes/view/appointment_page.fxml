@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="346.0" prefWidth="472.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.clinic.controller.AppointmentPageController">
+   <center>
+      <AnchorPane prefHeight="250.0" prefWidth="481.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox layoutX="20.0" prefHeight="235.0" prefWidth="66.0">
+               <children>
+                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="249.0" text="Full Day:" textAlignment="RIGHT" wrapText="true">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="296.0" text="From:" textAlignment="RIGHT">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="296.0" text="To" textAlignment="RIGHT">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="296.0" text="Client:" textAlignment="RIGHT">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="296.0" text="Purpose:" textAlignment="RIGHT">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="20.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox layoutX="104.0" layoutY="20.0" prefHeight="253.0" prefWidth="329.0">
+               <children>
+                  <CheckBox fx:id="fullDayCheckBox" mnemonicParsing="false" onAction="#onFullDayClicked">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </CheckBox>
+                  <HBox prefHeight="26.0" prefWidth="100.0">
+                     <VBox.margin>
+                        <Insets top="25.0" />
+                     </VBox.margin>
+                     <children>
+                        <DatePicker fx:id="fromDatePicker" onAction="#onFromDateChange" prefHeight="26.0" prefWidth="208.0" />
+                        <TextField fx:id="fromHourField" prefHeight="26.0" prefWidth="39.0">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Label text=":">
+                           <HBox.margin>
+                              <Insets top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="fromMinuteField" prefHeight="26.0" prefWidth="39.0" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="26.0" prefWidth="100.0">
+                     <children>
+                        <DatePicker fx:id="toDatePicker" onAction="#onToDateChange" prefHeight="26.0" prefWidth="208.0" />
+                        <TextField fx:id="toHourField" prefHeight="26.0" prefWidth="39.0">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Label text=":">
+                           <HBox.margin>
+                              <Insets top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="toMinuteField" prefHeight="26.0" prefWidth="39.0" />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="22.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <ComboBox fx:id="clientComboBox" onAction="#onClientChosen" prefWidth="150.0">
+                     <VBox.margin>
+                        <Insets top="22.0" />
+                     </VBox.margin>
+                  </ComboBox>
+                  <TextArea fx:id="purposeField" prefHeight="62.0" prefWidth="329.0">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </TextArea>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </center>
+   <top>
+      <AnchorPane prefHeight="51.0" prefWidth="472.0" style="-fx-background-color: black, white;; -fx-background-insets: 0, 0, 0, 1;" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="titleField" layoutX="14.0" layoutY="6.0" promptText="New Appointment" style="-fx-background-color: transparent;">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+         </children>
+      </AnchorPane>
+   </top>
+</BorderPane>

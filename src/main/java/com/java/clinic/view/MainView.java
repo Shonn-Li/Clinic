@@ -4,6 +4,7 @@ import com.java.clinic.controller.HomePageController;
 import com.java.clinic.controller.ClientsPageController;
 import com.java.clinic.controller.SelectionBarController;
 import com.java.clinic.model.UserModel;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ToolBar;
@@ -17,14 +18,14 @@ public class MainView {
     private final Stage stage;
     private final BorderPane root;
     private UserModel userModel;
-    private ToolBar selectionBar;
     private SelectionBarController selectionBarController;
     private ClientsPageController clientsPageController;
     private HomePageController homePageController;
+    private ToolBar selectionBar;
     private BorderPane homePage;
     private BorderPane patientPage;
-    private static final double WINDOW_X = 800;
-    private static final double WINDOW_Y = 600;
+    private static final double WINDOW_X = 1024;
+    private static final double WINDOW_Y = 768;
 
     public MainView(Stage stage) {
         this.stage = stage;
@@ -41,7 +42,7 @@ public class MainView {
         drawToolBar();
         initHomePage();
         initClientPage();
-        setClientPage();
+        setHomePage();
         stage.show();
     }
 
@@ -52,7 +53,12 @@ public class MainView {
         Scene scene = new Scene(root, WINDOW_X, WINDOW_Y);
         stage.setMinWidth(780.0);
         stage.setMinHeight(550.0);
+        stage.setWidth(WINDOW_X);
+        stage.setHeight(WINDOW_Y);
         stage.setScene(scene);
+        stage.setOnCloseRequest(event -> {
+            Platform.exit();
+        });
     }
 
     //
@@ -123,5 +129,6 @@ public class MainView {
     public void setClientPage() {
         root.setCenter(patientPage);
     }
+
 
 }

@@ -31,7 +31,6 @@ public class ClientModel {
     private SimpleStringProperty symptom;
     private SimpleStringProperty treatmentPlan; // current treatment plan
     private SimpleIntegerProperty providerId;
-    private SimpleListProperty<TransactionModel> transactionModels;
     private String url = "jdbc:mysql://localhost:3306/clinic";
     private String dbUser = "root";
     private String dbPassword = "Shonnlee2003";
@@ -74,7 +73,6 @@ public class ClientModel {
         } catch (SQLException e) {
             System.out.println("connection to sql failed on loading client model");
         }
-        initTransactionModels();
     }
 
     // all values must be not null!
@@ -103,42 +101,25 @@ public class ClientModel {
         try {
             connection = DriverManager.getConnection(url, dbUser, dbPassword);
             statement = connection.createStatement();
+
+            System.out.println("excuted update for client: " + createFullClientQuery());
             statement.executeUpdate(createFullClientQuery(), Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = statement.getGeneratedKeys();
             rs.next();
             this.clientId = new SimpleIntegerProperty(rs.getInt(1));
+            System.out.println("client id: " + this.getClientId());
+            System.out.println("client model created");
         } catch (SQLException e) {
-            System.err.println("create client failed in SQL");
-        }
-        initTransactionModels();
-    }
-
-    public void initTransactionModels() {
-        try {
-            ObservableList<TransactionModel> transactionModelList = FXCollections.observableArrayList();;
-            Connection connection = DriverManager.getConnection(url, dbUser, dbPassword);
-            Statement statement = connection.createStatement();
-            queryOutput = statement.executeQuery(selectAllTransactionIdQuery(this.getClientId()));
-            while (queryOutput.next()) {
-                transactionModelList.add(new TransactionModel(queryOutput.getInt("transaction_id"), this));
-            }
-            transactionModels = new SimpleListProperty<TransactionModel>(transactionModelList);
-        } catch (SQLException e) {
-            System.out.println("initTransactionModels failed");
+            System.err.println("create client failed in SQL" + ": " + e.getMessage());
         }
     }
-
 
     public void deleteClientInSQL() {
         try {
             queryOutputStatus  = statement.executeUpdate(deleteClientQuery(getClientId()));
         } catch (SQLException e) {
-            System.err.println("delete client failed in SQL");
+            System.err.println("delete client failed in SQL" + ": " + e.getMessage());
         }
-    }
-
-    public String selectAllTransactionIdQuery(int payerId) {
-        return "SELECT transaction_id FROM transaction WHERE payer_id = '" + payerId + "';";
     }
 
     public String selectClientQuery(int clientId) {
@@ -162,10 +143,6 @@ public class ClientModel {
                 /*"', '" + getRemainingTime() */ "', '" + getTreatmentPlan() + "', '" + getProviderId() + "');";
     }
 
-    public String createClientQuery() {
-        return "INSERT INTO client(provider_id) VALUES('"  + getProviderId() + "');";
-    }
-
     public void clientModelStatusOnPrint() {
         System.out.println("All values status: firstname: " + getFirstname() + " lastname: " + getLastname() + "gender: " + getGender() + "date_of_birth: " +
                 getDateOfBirth() + " email: " + getEmail() + " phone: " + getPhoneNumber() + " address: " +
@@ -184,7 +161,7 @@ public class ClientModel {
         try {
             queryOutputStatus = statement.executeUpdate("UPDATE client SET " + field + " = '" + value + "' WHERE client_id = '" + getClientId() + "'; ");
         } catch (SQLException e) {
-            System.err.println("update " + field + " failed in SQL");
+            System.err.println("update " + field + " failed in SQL" + ": " + e.getMessage());
         }
     }
 
@@ -192,7 +169,7 @@ public class ClientModel {
         try {
             queryOutputStatus = statement.executeUpdate("UPDATE client SET " + field + " = '" + value + "' WHERE client_id = '" + getClientId() + "'; ");
         } catch (SQLException e) {
-            System.err.println("update " + field + " failed in SQL");
+            System.err.println("update " + field + " failed in SQL" + ": " + e.getMessage());
         }
     }
 
@@ -200,7 +177,7 @@ public class ClientModel {
         try {
             queryOutputStatus = statement.executeUpdate("UPDATE client SET " + field + " = '" + value + "' WHERE client_id = '" + getClientId() + "'; ");
         } catch (SQLException e) {
-            System.err.println("update " + field + " failed in SQL");
+            System.err.println("update " + field + " failed in SQL" + ": " + e.getMessage());
         }
     }
 
@@ -208,7 +185,7 @@ public class ClientModel {
         try {
             queryOutputStatus = statement.executeUpdate("UPDATE client SET " + field + " = '" + value + "' WHERE client_id = '" + getClientId() + "'; ");
         } catch (SQLException e) {
-            System.err.println("update " + field + " failed in SQL");
+            System.err.println("update " + field + " failed in SQL" + ": " + e.getMessage());
         }
     }
     public String getFullName() {
@@ -474,15 +451,27 @@ public class ClientModel {
     }
 
     public ObservableList<TransactionModel> getTransactionModels() {
-        return transactionModels.get();
+        return userModel.getClientTransactionModels(getClientId());
     }
 
-    public SimpleListProperty<TransactionModel> transactionModelsProperty() {
-        return transactionModels;
+    public void addTransactionModel(TransactionModel transactionModel) {
+        userModel.addTransactionModel(transactionModel);
     }
 
-    public void setTransactionModels(ObservableList<TransactionModel> transactionModels) {
-        this.transactionModels.set(transactionModels);
+    public void deleteTransactionModels(TransactionModel transactionModel) {
+        userModel.deleteTransactionModel(transactionModel);
+    }
+
+    public ObservableList<AppointmentModel> getAppointmentModels() {
+        return userModel.getClientAppointmentModels(getClientId());
+    }
+
+    public void addAppointmentModel(AppointmentModel appointmentModel) {
+        userModel.addAppointmentModel(appointmentModel);
+    }
+
+    public void deleteAppointmentModel(AppointmentModel appointmentModel) {
+        userModel.deleteAppointmentModel(appointmentModel);
     }
 
     public UserModel getUserModel() {

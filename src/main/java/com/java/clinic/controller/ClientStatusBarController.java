@@ -34,6 +34,7 @@ public class ClientStatusBarController {
 
     @FXML
     void onClickAppointments(ActionEvent event) {
+        clientView.setClientAppointmentPage();
     }
 
     @FXML

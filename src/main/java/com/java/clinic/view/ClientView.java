@@ -5,7 +5,6 @@ import com.java.clinic.model.ClientModel;
 import com.java.clinic.model.UserModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -21,12 +20,14 @@ public class ClientView {
     private UserModel userModel;
     private ClientInfoPageController clientInfoPageController;
     private ClientNewPageController clientNewPageController;
+    private ClientAppointmentPageController clientAppointmentPageController;
     private ClientTransactionsPageController clientTransactionsPageController;
     private ClientStatusBarController clientStatusBarController;
     private ClientsPageController clientsPageController;
     private HBox clientInfoPage;
     private HBox clientNewPage;
     private BorderPane clientTransactionsPage;
+    private BorderPane clientAppointmentPage;
     private VBox clientStatusBar;
 
     private static final double WINDOW_X = 800;
@@ -38,7 +39,8 @@ public class ClientView {
         initClientInfoPage();
         initClientStatusBar();
         initClientTransactionsPage();
-        setClientInfoPage();
+        initClientAppointmentPage();
+        setClientAppointmentPage();
         setClientStatusBar();
     }
 
@@ -56,7 +58,8 @@ public class ClientView {
         initClientInfoPage();
         initClientTransactionsPage();
         initClientStatusBar();
-        setClientInfoPage();
+        initClientAppointmentPage();
+        setClientAppointmentPage();
         setClientStatusBar();
     }
 
@@ -150,5 +153,25 @@ public class ClientView {
 
     public void setClientTransactionsPage() {
         root.setCenter(clientTransactionsPage);
+    }
+
+
+    public void setClientAppointmentPage() {
+        root.setCenter(clientAppointmentPage);
+    }
+
+    public void initClientAppointmentPage() {
+        if (clientAppointmentPage != null) {
+            System.err.println("Already initialized clientAppointmentPage");
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/client_appointment_page.fxml"));
+            clientAppointmentPage = loader.load();
+            clientAppointmentPageController = loader.<ClientAppointmentPageController>getController();
+            clientAppointmentPageController.initClientAppointmentPageController(this, clientModel);
+        } catch (IOException io) {
+            System.out.println("client appointment page not loaded");
+        }
     }
 }

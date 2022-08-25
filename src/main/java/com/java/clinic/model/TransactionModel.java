@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import java.sql.*;
 
 public class TransactionModel {
-    private ClientModel clientModel;
+    private UserModel userModel;
     private SimpleIntegerProperty transactionId;
     private SimpleStringProperty payeeName;
     private SimpleStringProperty payeeEmail;
@@ -29,9 +29,9 @@ public class TransactionModel {
     private ResultSet queryOutput;
     private int queryOutputStatus;
 
-    public TransactionModel(int transactionId, ClientModel clientModel) {
+    public TransactionModel(int transactionId, UserModel userModel) {
         try {
-            this.clientModel = clientModel;
+            this.userModel = userModel;
             this.transactionId = new SimpleIntegerProperty(transactionId);
             connection = DriverManager.getConnection(url, dbUser, dbPassword);
             statement = connection.createStatement();
@@ -53,12 +53,12 @@ public class TransactionModel {
                 this.note = new SimpleStringProperty(queryOutput.getString("note"));
             }
         } catch (SQLException e) {
-            System.out.println("connection to sql failed on loading transaction model");
+            System.out.println("connection to sql failed on loading transaction model" + ": " + e.getMessage());
         }
     }
 
-    public TransactionModel(ClientModel clientModel, String payeeName, String payeeEmail, String payeePhone, String payerName, String payerEmail, String payerPhone, int payeeId, int payerId, Timestamp transactionDate, double amount, String purpose, String note) {
-        this.clientModel = clientModel;
+    public TransactionModel(UserModel userModel, String payeeName, String payeeEmail, String payeePhone, String payerName, String payerEmail, String payerPhone, int payeeId, int payerId, Timestamp transactionDate, double amount, String purpose, String note) {
+        this.userModel = userModel;
         this.payeeName = new SimpleStringProperty(payeeName);
         this.payeeEmail = new SimpleStringProperty(payeeEmail);
         this.payeePhone = new SimpleStringProperty(payeePhone);
@@ -78,9 +78,10 @@ public class TransactionModel {
             ResultSet rs = statement.getGeneratedKeys();
             rs.next();
             this.transactionId = new SimpleIntegerProperty(rs.getInt(1));
-
+            System.out.println("transaction id:" + getTransactionId());
+            System.out.println("transaction model created");
         } catch (SQLException e) {
-            System.err.println("create transaction failed in SQL");
+            System.err.println("create transaction failed in SQL" + ": " + e.getMessage());
         }
     }
 
@@ -88,15 +89,11 @@ public class TransactionModel {
         try {
             queryOutputStatus  = statement.executeUpdate(deleteTransactionQuery(getTransactionId()));
         } catch (SQLException e) {
-            System.err.println("delete client failed in SQL");
+            System.err.println("delete client failed in SQL" + ": " + e.getMessage());
         }
     }
     public String selectTransactionQuery(int transactionId) {
         return "SELECT * FROM transaction where transaction_id = '" + transactionId + "';";
-    }
-
-    public String selectTransactionQueryOnDate(Timestamp transactionDate) {
-        return "SELECT * FROM transaction where transaction_date = '" + transactionDate + "';";
     }
 
     public String createTransactionQuery() {
@@ -117,7 +114,7 @@ public class TransactionModel {
         try {
             queryOutputStatus = statement.executeUpdate("UPDATE transaction SET " + field + " = '" + value + "' WHERE transaction_id = '" + getTransactionId() + "'; ");
         } catch (SQLException e) {
-            System.err.println("update " + field + " for transaction failed in SQL");
+            System.err.println("update " + field + " for transaction failed in SQL" + ": " + e.getMessage());
         }
     }
 
@@ -125,7 +122,7 @@ public class TransactionModel {
         try {
             queryOutputStatus = statement.executeUpdate("UPDATE transaction SET " + field + " = '" + value + "' WHERE transaction_id = '" + getTransactionId() + "'; ");
         } catch (SQLException e) {
-            System.err.println("update " + field + " for transaction failed in SQL");
+            System.err.println("update " + field + " for transaction failed in SQL" + ": " + e.getMessage());
         }
     }
 
@@ -133,7 +130,7 @@ public class TransactionModel {
         try {
             queryOutputStatus = statement.executeUpdate("UPDATE transaction SET " + field + " = '" + value + "' WHERE transaction_id = '" + getTransactionId() + "'; ");
         } catch (SQLException e) {
-            System.err.println("update " + field + " for transaction failed in SQL");
+            System.err.println("update " + field + " for transaction failed in SQL" + ": " + e.getMessage());
         }
     }
 
@@ -142,7 +139,7 @@ public class TransactionModel {
         try {
             queryOutputStatus = statement.executeUpdate("UPDATE transaction SET " + field + " = '" + value + "' WHERE transaction_id = '" + getTransactionId() + "'; ");
         } catch (SQLException e) {
-            System.err.println("update " + field + " for transaction failed in SQL");
+            System.err.println("update " + field + " for transaction failed in SQL" + ": " + e.getMessage());
         }
     }
 
@@ -300,11 +297,7 @@ public class TransactionModel {
     }
 
     public ClientModel getClientModel() {
-        return clientModel;
-    }
-
-    public void setClientModel(ClientModel clientModel) {
-        this.clientModel = clientModel;
+        return userModel.findClientModelById(getPayerId());
     }
 
     public String getNote() {

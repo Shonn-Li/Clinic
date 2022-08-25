@@ -4,6 +4,9 @@ import com.java.clinic.model.ClientModel;
 import com.java.clinic.model.UserModel;
 import com.java.clinic.view.ClientView;
 import com.java.clinic.view.MainView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,7 +23,8 @@ import java.util.ResourceBundle;
 public class ClientsPageController implements Initializable {
     private UserModel userModel;
     private MainView mainView;
-    private ObservableList<ClientModel> list;
+    private ObservableList<ClientModel> list;;
+    private ObservableList<ClientModel> filteredList = FXCollections.observableArrayList();
     private ClientView clientView;
 
     public TextField searchBarInput;
@@ -79,12 +83,48 @@ public class ClientsPageController implements Initializable {
             });
             return row;
         });
+        searchBarInput.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+                if (newValue == "") {
+                    table.setItems(list);
+                    return;
+                }
+                filteredList.clear();
+                list.forEach((clientModel) -> {
+                    if (meetCondition(clientModel, newValue)) {
+                        filteredList.add(clientModel);
+                    }
+                });
+                table.setItems(filteredList);
+
+            }
+        });
+    }
+
+    private boolean meetCondition(ClientModel clientModel, String value) {
+        if (clientModel.getFullName().contains(value)) {
+            return true;
+        } else if (clientModel.getPhoneNumber().contains(value)) {
+            return true;
+        } else if (clientModel.getTreatmentPlan().contains(value)) {
+            return true;
+        } else if (String.valueOf(clientModel.getDateOfBirth()).contains(value)){
+            return true;
+        } else if (String.valueOf(clientModel.getLastVisit()).contains(value)){
+            return true;
+        }
+        return false;
     }
 
     @FXML
     void onClickDeleteBtn(ActionEvent event) {
         currentSelected.deleteClientInSQL();
         list.remove(currentSelected);
+        if (filteredList.contains(currentSelected)) {
+            filteredList.remove(currentSelected);
+        }
         userModel.setClientModels(list);
     }
 
@@ -100,6 +140,9 @@ public class ClientsPageController implements Initializable {
 
     public void newClientModelCreated(ClientModel clientModel) {
         list.add(clientModel);
+        if (meetCondition(clientModel, searchBarInput.getText())) {
+            filteredList.add(clientModel);
+        }
         userModel.setClientModels(list);
     }
 }

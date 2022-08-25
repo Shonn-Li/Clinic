@@ -66,7 +66,7 @@ public class ClientTransactionNewPageController {
             return;
         }
         UserModel userModel = clientModel.getUserModel();
-        clientTransactionView.clientTransactionNewPageFinished(new TransactionModel(clientModel,
+        clientTransactionView.clientTransactionNewPageFinished(new TransactionModel(clientModel.getUserModel(),
                 userModel.getUserFullName(), userModel.getEmail(), userModel.getPhoneNumber(), clientModel.getFullName(),
                 clientModel.getEmail(), clientModel.getPhoneNumber(), userModel.getUserId(), clientModel.getClientId(),
                 new Timestamp(System.currentTimeMillis()), Double.parseDouble(amountField.getText()), purposeField.getText(), noteField.getText()));
