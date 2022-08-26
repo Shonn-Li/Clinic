@@ -9,6 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 public class ClientInfoPageController {
@@ -99,7 +100,7 @@ public class ClientInfoPageController {
         });
         emailField.setText(clientModel.getEmail());
         addressField.setText(clientModel.getAddress());
-        dateOfBirthField.setValue(clientModel.getDateOfBirth().toLocalDate());
+        dateOfBirthField.setValue(clientModel.getDateOfBirth());
         emergencyContactNameField.setText(clientModel.getEmergencyName());
         emergencyContactPhoneNumberField.setText(clientModel.getEmergencyPhone());
         familyDoctorNameField.setText(clientModel.getDoctorName());
@@ -177,7 +178,7 @@ public class ClientInfoPageController {
         clientModel.setMSP(MSPNumberField.getText());
         clientModel.setAddress(addressField.getText());
         clientModel.setGender(gender);
-        clientModel.setDateOfBirth(java.sql.Date.valueOf(dateOfBirthField.getValue()));
+        clientModel.setDateOfBirth(dateOfBirthField.getValue());
         clientModel.setEmergencyName(emergencyContactNameField.getText());
         clientModel.setEmergencyPhone(emergencyContactPhoneNumberField.getText());
         clientModel.setDoctorName(familyDoctorNameField.getText());
@@ -185,7 +186,7 @@ public class ClientInfoPageController {
         clientModel.setMedicalHistory(historyField.getText());
         clientModel.setSymptom(symptomField.getText());
         clientModel.setTreatmentPlan(treatmentField.getText());
-        clientModel.setLastVisit(new Timestamp(System.currentTimeMillis()));
+        clientModel.setLastVisit(LocalDateTime.now());
     }
 
     @FXML

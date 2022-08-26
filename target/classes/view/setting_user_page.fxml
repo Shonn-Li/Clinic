@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.clinic.controller.SettingUserPageController">
+   <children>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox layoutX="42.0" layoutY="36.0" prefHeight="48.0" prefWidth="213.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Username" />
+                     </children>
+                  </HBox>
+                  <TextField fx:id="usernameField" prefHeight="26.0" prefWidth="187.0" />
+               </children>
+            </VBox>
+            <Button fx:id="updateBtn" layoutX="500.0" layoutY="348.0" mnemonicParsing="false" onAction="#onClickUpdate" prefHeight="29.0" prefWidth="73.0" text="Update" />
+            <VBox layoutX="42.0" layoutY="99.0" prefHeight="48.0" prefWidth="213.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Email" />
+                     </children>
+                  </HBox>
+                  <TextField fx:id="emailField" prefHeight="26.0" prefWidth="187.0" />
+               </children>
+            </VBox>
+            <VBox layoutX="42.0" layoutY="164.0" prefHeight="48.0" prefWidth="213.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label text="First Name" />
+                     </children>
+                  </HBox>
+                  <TextField fx:id="firstNameField" prefHeight="26.0" prefWidth="187.0" />
+               </children>
+            </VBox>
+            <Button fx:id="changePasswordBtn" layoutX="363.0" layoutY="348.0" mnemonicParsing="false" onAction="#onClickChangePassword" prefHeight="29.0" prefWidth="126.0" text="Change Password" />
+            <VBox layoutX="42.0" layoutY="228.0" prefHeight="48.0" prefWidth="213.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Last Name" />
+                     </children>
+                  </HBox>
+                  <TextField fx:id="lastNameField" prefHeight="26.0" prefWidth="187.0" />
+               </children>
+            </VBox>
+            <VBox layoutX="300.0" layoutY="36.0" prefHeight="48.0" prefWidth="213.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Phone Number" />
+                     </children>
+                  </HBox>
+                  <TextField fx:id="phoneNumberField" prefHeight="26.0" prefWidth="187.0" />
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

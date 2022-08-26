@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 
@@ -176,6 +177,14 @@ public class UserModel {
                 getPhoneNumber() + "');";
     }
 
+    public ObservableList<TransactionModel> getTransactionModelsBetweenDate(LocalDateTime start, LocalDateTime end) {
+        return transactionModels.filtered(t -> t.getTransactionDate().isAfter(start) && t.getTransactionDate().isBefore(end));
+    }
+
+    public Double getTransactionModelsSum(ObservableList<TransactionModel> transactionModels) {
+        return transactionModels.stream().mapToDouble(o -> o.getAmount()).sum();
+    }
+
     public void updateStringFieldInSQL(String field, String value) {
         try {
             queryOutputStatus = statement.executeUpdate("UPDATE user SET " + field + " = '" + value + "' WHERE user_id = '" + getUserId() + "'; ");
@@ -242,10 +251,6 @@ public class UserModel {
 
     public SimpleIntegerProperty userIdProperty() {
         return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId.set(userId);
     }
 
     public ObservableList<ClientModel> getClientModels() {

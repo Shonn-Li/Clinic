@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class ClientTransactionNewPageController {
     private ClientModel clientModel;
@@ -69,6 +70,6 @@ public class ClientTransactionNewPageController {
         clientTransactionView.clientTransactionNewPageFinished(new TransactionModel(clientModel.getUserModel(),
                 userModel.getUserFullName(), userModel.getEmail(), userModel.getPhoneNumber(), clientModel.getFullName(),
                 clientModel.getEmail(), clientModel.getPhoneNumber(), userModel.getUserId(), clientModel.getClientId(),
-                new Timestamp(System.currentTimeMillis()), Double.parseDouble(amountField.getText()), purposeField.getText(), noteField.getText()));
+                LocalDateTime.now(), Double.parseDouble(amountField.getText()), purposeField.getText(), noteField.getText()));
     }
 }

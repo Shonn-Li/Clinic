@@ -1,12 +1,12 @@
 package com.java.clinic.model;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class ClientModel {
     private UserModel userModel;
@@ -17,15 +17,15 @@ public class ClientModel {
     private SimpleStringProperty gender;
     private SimpleStringProperty email;
     private SimpleStringProperty phoneNumber;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private SimpleStringProperty address;
     private SimpleStringProperty MSP;
     private SimpleStringProperty emergencyName;
     private SimpleStringProperty emergencyPhone;
     private SimpleStringProperty doctorName;
     private SimpleStringProperty doctorPhone;
-    private Date lastPaymentDate; // format ddmmyyyy // last payment
-    private Timestamp lastVisit; // last visit for this user
+    private LocalDate lastPaymentDate; // format ddmmyyyy // last payment
+    private LocalDateTime lastVisit; // last visit for this user
     private SimpleIntegerProperty remainingTime; // remaining times for the treatment plan
     private SimpleStringProperty medicalHistory;
     private SimpleStringProperty symptom;
@@ -53,7 +53,7 @@ public class ClientModel {
                 this.lastname = new SimpleStringProperty(queryOutput.getString("last_name"));
                 this.fullName = new SimpleStringProperty(firstname.get() + " " + lastname.get());
                 this.gender = new SimpleStringProperty(queryOutput.getString("gender"));
-                this.dateOfBirth = queryOutput.getDate("date_of_birth");
+                this.dateOfBirth = queryOutput.getDate("date_of_birth").toLocalDate();
                 this.email = new SimpleStringProperty(queryOutput.getString("email"));
                 this.phoneNumber = new SimpleStringProperty(queryOutput.getString("phone"));
                 this.address = new SimpleStringProperty(queryOutput.getString("address"));
@@ -63,7 +63,7 @@ public class ClientModel {
                 this.doctorName = new SimpleStringProperty(queryOutput.getString("doctor_contact_name"));
                 this.doctorPhone = new SimpleStringProperty(queryOutput.getString("doctor_contact_phone"));
                 this.medicalHistory = new SimpleStringProperty(queryOutput.getString("medical_history"));
-                this.lastVisit = queryOutput.getTimestamp("last_visit_date");
+                this.lastVisit = queryOutput.getTimestamp("last_visit_date").toLocalDateTime();
                 this.symptom = new SimpleStringProperty(queryOutput.getString("symptom"));
 //                this.lastPaymentDate = queryOutput.getDate("last_payment_date");
                 this.treatmentPlan = new SimpleStringProperty(queryOutput.getString("treatment_plan"));
@@ -76,7 +76,7 @@ public class ClientModel {
     }
 
     // all values must be not null!
-    public ClientModel(UserModel userModel, String firstname, String lastname, String gender, Date dateOfBirth, String email, String phoneNumber, String address, String MSP, String emergencyName, String emergencyPhone, String doctorName, String doctorPhone, Timestamp lastVisit, String medicalHistory, String symptom, String treatmentPlan, int provider_id) {
+    public ClientModel(UserModel userModel, String firstname, String lastname, String gender, LocalDate dateOfBirth, String email, String phoneNumber, String address, String MSP, String emergencyName, String emergencyPhone, String doctorName, String doctorPhone, LocalDateTime lastVisit, String medicalHistory, String symptom, String treatmentPlan, int provider_id) {
         this.userModel = userModel;
         this.firstname = new SimpleStringProperty(firstname);
         this.lastname = new SimpleStringProperty(lastname);
@@ -136,7 +136,7 @@ public class ClientModel {
                 " doctor_contact_name, doctor_contact_phone, last_visit_date," +
                 " medical_history, symptom, treatment_plan, " + "" +
                 "provider_id) VALUES('" + getFirstname() + "', '" + getLastname() + "', '" + getGender() + "', '" +
-                getDateOfBirth() + "', '" + getEmail() + "', '" + getPhoneNumber() + "', '" +
+                Date.valueOf(getDateOfBirth()) + "', '" + getEmail() + "', '" + getPhoneNumber() + "', '" +
                 getAddress() + "', '" + getMSP() + "', '" + getEmergencyName() +
                 "', '" + getEmergencyPhone() + "', '" + getDoctorName() + "', '" +
                 getDoctorPhone()+ "', '" + getLastVisit() + "', '" + getMedicalHistory() + "', '" + getSymptom() +
@@ -148,7 +148,7 @@ public class ClientModel {
                 getDateOfBirth() + " email: " + getEmail() + " phone: " + getPhoneNumber() + " address: " +
                 getAddress() + " MSP: " + getMSP() + " emergencyEmail: " + getEmergencyName() +
                 " emergencyPhone: " + getEmergencyPhone() + " doctorEmail: " + getDoctorName() + "  " +
-                getDoctorPhone() + " lastVisit: " + getLastVisit() + " medical history: " + getMedicalHistory() + " symptom: " + getSymptom() +
+                getDoctorPhone() + " lastVisit: " + Timestamp.valueOf(getLastVisit()) + " medical history: " + getMedicalHistory() + " symptom: " + getSymptom() +
 //                " lastPaymentDate " + getLastPaymentDate() + " remainingTime: " + getRemainingTime() +
                 " treatmentPlan" + getTreatmentPlan() + " providerId: " + getProviderId());
     }
@@ -173,17 +173,17 @@ public class ClientModel {
         }
     }
 
-    public void updateDateFieldInSQL(String field, Date value) {
+    public void updateLocaleDateFieldInSQL(String field, LocalDate value) {
         try {
-            queryOutputStatus = statement.executeUpdate("UPDATE client SET " + field + " = '" + value + "' WHERE client_id = '" + getClientId() + "'; ");
+            queryOutputStatus = statement.executeUpdate("UPDATE client SET " + field + " = '" + Date.valueOf(value) + "' WHERE client_id = '" + getClientId() + "'; ");
         } catch (SQLException e) {
             System.err.println("update " + field + " failed in SQL" + ": " + e.getMessage());
         }
     }
 
-    public void updateTimestampFieldSQL(String field, Timestamp value) {
+    public void updateLocalDateTimeFieldSQL(String field, LocalDateTime value) {
         try {
-            queryOutputStatus = statement.executeUpdate("UPDATE client SET " + field + " = '" + value + "' WHERE client_id = '" + getClientId() + "'; ");
+            queryOutputStatus = statement.executeUpdate("UPDATE client SET " + field + " = '" + Timestamp.valueOf(value) + "' WHERE client_id = '" + getClientId() + "'; ");
         } catch (SQLException e) {
             System.err.println("update " + field + " failed in SQL" + ": " + e.getMessage());
         }
@@ -267,12 +267,12 @@ public class ClientModel {
         this.phoneNumber.set(phoneNumber);
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        updateDateFieldInSQL("date_of_birth", dateOfBirth);
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        updateLocaleDateFieldInSQL("date_of_birth", dateOfBirth);
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -354,21 +354,21 @@ public class ClientModel {
         this.doctorPhone.set(doctorPhone);
     }
 
-    public Date getLastPaymentDate() {
+    public LocalDate getLastPaymentDate() {
         return lastPaymentDate;
     }
 
-    public void setLastPaymentDate(Date lastPaymentDate) {
-        updateDateFieldInSQL("last_payment_date", lastPaymentDate);
+    public void setLastPaymentDate(LocalDate lastPaymentDate) {
+        updateLocaleDateFieldInSQL("last_payment_date", lastPaymentDate);
         this.lastPaymentDate = lastPaymentDate;
     }
 
-    public Timestamp getLastVisit() {
+    public LocalDateTime getLastVisit() {
         return lastVisit;
     }
 
-    public void setLastVisit(Timestamp lastVisit) {
-        updateTimestampFieldSQL("last_visit_date", lastVisit);
+    public void setLastVisit(LocalDateTime lastVisit) {
+        updateLocalDateTimeFieldSQL("last_visit_date", lastVisit);
         this.lastVisit = lastVisit;
     }
 
@@ -480,5 +480,12 @@ public class ClientModel {
 
     public void setUserModel(UserModel userModel) {
         this.userModel = userModel;
+    }
+
+    //
+    // for table view time stamp, called on run time
+    //
+    public Timestamp getLastVisitTimestamp() {
+        return Timestamp.valueOf(getLastVisit());
     }
 }

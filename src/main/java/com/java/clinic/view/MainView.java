@@ -3,6 +3,7 @@ package com.java.clinic.view;
 import com.java.clinic.controller.HomePageController;
 import com.java.clinic.controller.ClientsPageController;
 import com.java.clinic.controller.SelectionBarController;
+import com.java.clinic.controller.SettingPageController;
 import com.java.clinic.model.UserModel;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -17,13 +18,16 @@ import java.io.IOException;
 public class MainView {
     private final Stage stage;
     private final BorderPane root;
+    private SettingView settingView;
     private UserModel userModel;
     private SelectionBarController selectionBarController;
     private ClientsPageController clientsPageController;
+    private SettingPageController settingPageController;
     private HomePageController homePageController;
     private ToolBar selectionBar;
     private BorderPane homePage;
     private BorderPane patientPage;
+    private BorderPane settingPage;
     private static final double WINDOW_X = 1024;
     private static final double WINDOW_Y = 768;
 
@@ -38,10 +42,12 @@ public class MainView {
     //
     public void initializeClinicInterface(UserModel userModel) {
         this.userModel = userModel;
+        System.out.println(userModel.getUsername());
         drawBackground();
         drawToolBar();
         initHomePage();
         initClientPage();
+        initSettingPage();
         setHomePage();
         stage.show();
     }
@@ -129,6 +135,22 @@ public class MainView {
     public void setClientPage() {
         root.setCenter(patientPage);
     }
+
+    //
+    // initialize Setting page
+    //
+    public void initSettingPage() {
+        settingView = new SettingView(userModel);
+        settingPage = settingView.getSettingView();
+    }
+
+    //
+    // set settingPage as mainView
+    //
+    public void setSettingPage() {
+        root.setCenter(settingPage);
+    }
+
 
 
 }

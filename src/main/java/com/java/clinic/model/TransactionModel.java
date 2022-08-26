@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 
 public class TransactionModel {
     private UserModel userModel;
@@ -17,7 +18,7 @@ public class TransactionModel {
     private SimpleStringProperty payerPhone;
     private SimpleIntegerProperty payeeId;
     private SimpleIntegerProperty payerId;
-    private Timestamp transactionDate; // format ddmmyyyy // last payment
+    private LocalDateTime transactionDate; // format ddmmyyyy // last payment
     private SimpleDoubleProperty amount; // remaining times for the treatment plan
     private SimpleStringProperty purpose;
     private SimpleStringProperty note;
@@ -47,7 +48,7 @@ public class TransactionModel {
                 this.payerPhone = new SimpleStringProperty(queryOutput.getString("payer_phone"));
                 this.payeeId = new SimpleIntegerProperty(queryOutput.getInt("payee_id"));
                 this.payerId = new SimpleIntegerProperty(queryOutput.getInt("payer_id"));
-                this.transactionDate = queryOutput.getTimestamp("transaction_date");
+                this.transactionDate = queryOutput.getTimestamp("transaction_date").toLocalDateTime();
                 this.amount = new SimpleDoubleProperty(queryOutput.getDouble("amount"));
                 this.purpose = new SimpleStringProperty(queryOutput.getString("purpose"));
                 this.note = new SimpleStringProperty(queryOutput.getString("note"));
@@ -57,7 +58,7 @@ public class TransactionModel {
         }
     }
 
-    public TransactionModel(UserModel userModel, String payeeName, String payeeEmail, String payeePhone, String payerName, String payerEmail, String payerPhone, int payeeId, int payerId, Timestamp transactionDate, double amount, String purpose, String note) {
+    public TransactionModel(UserModel userModel, String payeeName, String payeeEmail, String payeePhone, String payerName, String payerEmail, String payerPhone, int payeeId, int payerId, LocalDateTime transactionDate, double amount, String purpose, String note) {
         this.userModel = userModel;
         this.payeeName = new SimpleStringProperty(payeeName);
         this.payeeEmail = new SimpleStringProperty(payeeEmail);
@@ -102,7 +103,7 @@ public class TransactionModel {
                 "transaction_date, amount, purpose) VALUES('" + getPayeeName() + "', '" + getPayeeEmail() + "', '" +
                 getPayeePhone() + "', '" + getPayerName() + "', '" + getPayerEmail() + "', '" +
                 getPayerPhone() + "', '" + getPayeeId() + "', '" + getPayerId() +
-                "', '" + getTransactionDate() + "', '" + getAmount() + "', '" +
+                "', '" + Timestamp.valueOf(getTransactionDate()) + "', '" + getAmount() + "', '" +
                 getPurpose() + "');";
     }
 
@@ -135,9 +136,9 @@ public class TransactionModel {
     }
 
 
-    public void updateTimestampFieldInSQL(String field, Timestamp value) {
+    public void updateLocalDateTimeFieldInSQL(String field, LocalDateTime value) {
         try {
-            queryOutputStatus = statement.executeUpdate("UPDATE transaction SET " + field + " = '" + value + "' WHERE transaction_id = '" + getTransactionId() + "'; ");
+            queryOutputStatus = statement.executeUpdate("UPDATE transaction SET " + field + " = '" + Timestamp.valueOf(value) + "' WHERE transaction_id = '" + getTransactionId() + "'; ");
         } catch (SQLException e) {
             System.err.println("update " + field + " for transaction failed in SQL" + ": " + e.getMessage());
         }
@@ -261,12 +262,12 @@ public class TransactionModel {
         this.payerId.set(payerId);
     }
 
-    public Timestamp getTransactionDate() {
+    public LocalDateTime getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(Timestamp transactionDate) {
-        updateTimestampFieldInSQL("transaction_date", transactionDate);
+    public void setTransactionDate(LocalDateTime transactionDate) {
+        updateLocalDateTimeFieldInSQL("transaction_date", transactionDate);
         this.transactionDate = transactionDate;
     }
 
@@ -311,5 +312,12 @@ public class TransactionModel {
     public void setNote(String note) {
         updateStringFieldInSQL("note", note);
         this.note.set(note);
+    }
+
+    //
+    // for table view time stamp, called on run time
+    //
+    public Timestamp getTransactionDateTimestamp() {
+        return Timestamp.valueOf(getTransactionDate());
     }
 }

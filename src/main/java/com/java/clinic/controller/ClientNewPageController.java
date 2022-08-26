@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 public class ClientNewPageController {
@@ -152,10 +153,10 @@ public class ClientNewPageController {
         }
 
         clientView.clientNewPageFinished(new ClientModel(userModel, firstNameField.getText(), lastNameField.getText(), gender,
-                java.sql.Date.valueOf(dateOfBirthField.getValue()), emailField.getText(), phoneNumberField.getText(),
+                dateOfBirthField.getValue(), emailField.getText(), phoneNumberField.getText(),
                 addressField.getText(), MSPNumberField.getText(), emergencyContactNameField.getText(),
                 emergencyContactPhoneNumberField.getText(), familyDoctorNameField.getText(),
-                familyDoctorPhoneNumberField.getText(), new Timestamp(System.currentTimeMillis()),
+                familyDoctorPhoneNumberField.getText(), LocalDateTime.now(),
                 historyField.getText(), symptomField.getText(), treatmentField.getText(), userModel.getUserId()));
     }
 

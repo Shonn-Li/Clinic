@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="436.0" prefWidth="766.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.clinic.controller.SettingReportPageController">
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+            <Label text="Chart:" />
+            <ComboBox fx:id="chartTypePicker" onAction="#chartTypeSelected" prefHeight="19.0" prefWidth="159.0" />
+            <Label fx:id="numberField" text="Chart:" />
+            <Spinner fx:id="numberSpinner" prefHeight="26.0" prefWidth="77.0" />
+            <HBox fx:id="spacer" prefHeight="35.0" prefWidth="110.0" />
+            <Label prefHeight="17.0" prefWidth="36.0" text="From:" />
+            <DatePicker fx:id="startDate" onAction="#fromValueChange" prefHeight="26.0" prefWidth="120.0" />
+            <Label prefHeight="17.0" prefWidth="22.0" text="To:" />
+            <DatePicker fx:id="endDate" onAction="#toValueChange" prefHeight="26.0" prefWidth="120.0" />
+        </items>
+      </ToolBar>
+   </top>
+   <right>
+      <VBox prefHeight="390.0" prefWidth="327.0" BorderPane.alignment="CENTER">
+         <children>
+            <TableView fx:id="table" prefHeight="384.0" prefWidth="327.0">
+              <columns>
+                <TableColumn fx:id="date" prefWidth="175.0" text="Date" />
+                <TableColumn fx:id="amount" minWidth="0.0" prefWidth="149.0" text="Amount" />
+              </columns>
+            </TableView>
+            <HBox prefHeight="64.0" prefWidth="248.0">
+               <children>
+                  <Label prefHeight="32.0" prefWidth="80.0" text="Total Income:" />
+                  <HBox prefHeight="35.0" prefWidth="120.0" />
+                  <Label fx:id="amountField" prefHeight="32.0" prefWidth="80.0" text="Amount" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </right>
+   <center>
+      <BarChart fx:id="chart" title="Income Statistic" BorderPane.alignment="CENTER">
+        <xAxis>
+          <CategoryAxis fx:id="category" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis label="\$Dollar" side="LEFT" />
+        </yAxis>
+      </BarChart>
+   </center>
+</BorderPane>

@@ -45,6 +45,8 @@ public class SelectionBarController {
     }
 
     public void switchSettingPage(Event e) {
+
         System.out.println("switchSettingPage clicked");
+        mainView.setSettingPage();
     }
 }

@@ -17,6 +17,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 
@@ -32,7 +33,7 @@ public class ClientTransactionsPageController implements Initializable {
 
     public TableColumn<TransactionModel, Timestamp> transactionDate;
 
-    public TableColumn<TransactionModel, Integer> amount;
+    public TableColumn<TransactionModel, Double> amount;
 
     public TableColumn<TransactionModel, String> purpose;
 
@@ -59,8 +60,8 @@ public class ClientTransactionsPageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        transactionDate.setCellValueFactory(new PropertyValueFactory<TransactionModel, Timestamp>("transactionDate"));
-        amount.setCellValueFactory(new PropertyValueFactory<TransactionModel, Integer>("amount"));
+        transactionDate.setCellValueFactory(new PropertyValueFactory<TransactionModel, Timestamp>("transactionDateTimestamp"));
+        amount.setCellValueFactory(new PropertyValueFactory<TransactionModel, Double>("amount"));
         purpose.setCellValueFactory(new PropertyValueFactory<TransactionModel, String>("purpose"));
         payee.setCellValueFactory(new PropertyValueFactory<TransactionModel, String>("payeeName"));
         payer.setCellValueFactory(new PropertyValueFactory<TransactionModel, String>("payerName"));

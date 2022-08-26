@@ -17,6 +17,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 
@@ -39,7 +41,7 @@ public class ClientsPageController implements Initializable {
 
     public TableColumn<ClientModel, String> currentTreatmentPlan;
 
-    public TableColumn<ClientModel, Date> dateOfBirth;
+    public TableColumn<ClientModel, LocalDate> dateOfBirth;
 
     public TableColumn<ClientModel, Timestamp> lastVisited;
 
@@ -65,8 +67,8 @@ public class ClientsPageController implements Initializable {
         name.setCellValueFactory(new PropertyValueFactory<ClientModel, String>("fullName"));
         gender.setCellValueFactory(new PropertyValueFactory<ClientModel, String>("gender"));
         currentTreatmentPlan.setCellValueFactory(new PropertyValueFactory<ClientModel, String>("treatmentPlan"));
-        dateOfBirth.setCellValueFactory(new PropertyValueFactory<ClientModel, Date>("dateOfBirth"));
-        lastVisited.setCellValueFactory(new PropertyValueFactory<ClientModel, Timestamp>("lastVisit"));
+        dateOfBirth.setCellValueFactory(new PropertyValueFactory<ClientModel, LocalDate>("dateOfBirth"));
+        lastVisited.setCellValueFactory(new PropertyValueFactory<ClientModel, Timestamp>("lastVisitTimestamp"));
         phoneNumber.setCellValueFactory(new PropertyValueFactory<ClientModel, String>("phoneNumber"));
 
         table.setRowFactory(tv -> {
