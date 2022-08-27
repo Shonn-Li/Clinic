@@ -108,7 +108,23 @@ public class MainView {
     // set home page as mainView
     //
     public void setHomePage() {
+        homePageController.initUI();
         root.setCenter(homePage);
+    }
+
+    //
+    // disable home page
+    //
+    public void disableHomePage() {
+        selectionBarController.disableHomePage();
+    }
+
+
+    //
+    // enable home page
+    //
+    public void enableHomePage() {
+        selectionBarController.enableHomePage();
     }
 
     //

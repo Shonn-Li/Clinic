@@ -65,6 +65,7 @@ public class AppointmentPageController {
 
     private void initInfo() {
         if (appointmentModel.getVisitorId() != 0) {
+            System.out.println("appointmentModel's client is chosen");
             clientComboBox.getSelectionModel().select(appointmentModel.getClientModel());
         }
         Callback<ListView<ClientModel>, ListCell<ClientModel>> factory = lv -> new ListCell<ClientModel>() {
@@ -194,6 +195,10 @@ public class AppointmentPageController {
 
     @FXML
     void onClientChosen(ActionEvent event) {
+        if (clientComboBox.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+        System.out.println("client for appointment chosen");
         appointmentModel.setVisitorId(clientComboBox.getSelectionModel().getSelectedItem().getClientId());
     }
 

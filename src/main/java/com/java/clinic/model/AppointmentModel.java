@@ -2,6 +2,7 @@ package com.java.clinic.model;
 
 import com.calendarfx.model.Entry;
 import com.calendarfx.model.Interval;
+import com.java.clinic.connection.DBConnection;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -16,10 +17,6 @@ public class AppointmentModel extends Entry {
     private SimpleStringProperty visitPurpose;
     private SimpleIntegerProperty hostId;
     private SimpleIntegerProperty visitorId;
-    private String url = "jdbc:mysql://localhost:3306/clinic";
-    private String dbUser = "root";
-    private String dbPassword = "Shonnlee2003";
-    private Connection connection;
     private Statement statement;
     private ResultSet queryOutput;
     private int queryOutputStatus;
@@ -29,8 +26,7 @@ public class AppointmentModel extends Entry {
         try {
             this.userModel = userModel;
             this.appointmentId = new SimpleIntegerProperty(appointmentId);
-            connection = DriverManager.getConnection(url, dbUser, dbPassword);
-            statement = connection.createStatement();
+            statement = DBConnection.getConnection().createStatement();
             queryOutput = statement.executeQuery(selectAppointmentQuery());
             System.out.print("loading appointment model (I should be singular): ");
             while (queryOutput.next()) {
@@ -55,8 +51,7 @@ public class AppointmentModel extends Entry {
         this.visitorId = new SimpleIntegerProperty(0);
         this.visitPurpose = new SimpleStringProperty("");
         try {
-            connection = DriverManager.getConnection(url, dbUser, dbPassword);
-            statement = connection.createStatement();
+            statement = DBConnection.getConnection().createStatement();
 //            System.out.println("create appointment command: " + createAppointmentQuery());
             statement.executeUpdate(createAppointmentQuery(), Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = statement.getGeneratedKeys();

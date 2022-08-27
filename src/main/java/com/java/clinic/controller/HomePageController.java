@@ -3,10 +3,13 @@ package com.java.clinic.controller;
 import com.calendarfx.model.CalendarEvent;
 import com.calendarfx.model.Entry;
 import com.java.clinic.model.AppointmentModel;
+import com.java.clinic.model.TransactionModel;
 import com.java.clinic.model.UserModel;
 import com.java.clinic.view.AppointmentView;
 import com.java.clinic.view.MainView;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -60,12 +63,11 @@ public class HomePageController {
         Calendar work = defaultSource.getCalendars().get(0);
         work.setName("Work");
         ObservableList<AppointmentModel> appointmentModels = userModel.getAppointmentModels();
+        System.out.println(appointmentModels.size());
         appointmentModels.forEach((appointmentModel) -> {
             work.addEntry(appointmentModel);
         });
         work.addEventHandler(new CalendarEventHandler());
-
-
         calendarView.setRequestedTime(LocalTime.now());
         Thread updateTimeThread = new Thread("Calendar: Update Time Thread") {
             @Override
@@ -103,6 +105,7 @@ public class HomePageController {
                 deletingAppointmentModel.deleteAppointmentInSQL();
                 userModel.deleteAppointmentModel((AppointmentModel) event.getEntry());
             } else if (event.isEntryAdded()) {
+                System.out.println("new entry is added");
                 userModel.addAppointmentModel((AppointmentModel) event.getEntry());
             }
         }

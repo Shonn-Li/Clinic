@@ -1,5 +1,6 @@
 package com.java.clinic.model;
 
+import com.java.clinic.connection.DBConnection;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
@@ -31,10 +32,6 @@ public class ClientModel {
     private SimpleStringProperty symptom;
     private SimpleStringProperty treatmentPlan; // current treatment plan
     private SimpleIntegerProperty providerId;
-    private String url = "jdbc:mysql://localhost:3306/clinic";
-    private String dbUser = "root";
-    private String dbPassword = "Shonnlee2003";
-    private Connection connection;
     private Statement statement;
     private ResultSet queryOutput;
     private int queryOutputStatus;
@@ -43,8 +40,7 @@ public class ClientModel {
         try {
             this.userModel = userModel;
             this.clientId = new SimpleIntegerProperty(clientId);
-            connection = DriverManager.getConnection(url, dbUser, dbPassword);
-            statement = connection.createStatement();
+            statement = DBConnection.getConnection().createStatement();
             queryOutput = statement.executeQuery(selectClientQuery(clientId));
             System.out.print("loading client model (I should be singular): ");
             while (queryOutput.next()) {
@@ -99,8 +95,7 @@ public class ClientModel {
         this.treatmentPlan = new SimpleStringProperty(treatmentPlan);
         this.providerId = new SimpleIntegerProperty(provider_id);
         try {
-            connection = DriverManager.getConnection(url, dbUser, dbPassword);
-            statement = connection.createStatement();
+            statement = DBConnection.getConnection().createStatement();
 
             System.out.println("excuted update for client: " + createFullClientQuery());
             statement.executeUpdate(createFullClientQuery(), Statement.RETURN_GENERATED_KEYS);

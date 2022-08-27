@@ -31,7 +31,13 @@ public class SelectionBarController {
 //        this.mainView = mainView;
 //        this.viewModel = viewModel;
 //    }
+    public void disableHomePage() {
+        homeBtn.setDisable(true);
+    }
 
+    public void enableHomePage() {
+        homeBtn.setDisable(false);
+    }
 
     public void switchHomePage(Event e) {
         System.out.println("switchHomePage clicked");

@@ -34,9 +34,10 @@ public class AppointmentView extends BorderPane {
         return this;
     }
 
-    public BorderPane initAppointmentView(AppointmentModel appointmentModel, boolean isClientOnly) {
-        System.out.println("initAppointmentView called");
+    public BorderPane initAppointmentView(AppointmentModel appointmentModel, int clientId) {
+        System.out.println("initAppointmentView with client id called");
         this.appointmentModel = appointmentModel;
+        appointmentModel.setVisitorId(clientId);
         appointmentPageController.initAppointmentPageController(this, appointmentModel, true);
         super.setCenter(appointmentPage);
         return this;

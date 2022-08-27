@@ -76,7 +76,11 @@ public class ClientsPageController implements Initializable {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
                     ClientModel rowData = row.getItem();
-                    clientView = new ClientView(rowData);
+                    if (clientView != null) {
+                        clientView.endClientView();
+                    }
+                    clientView = new ClientView(this, rowData);
+                    mainView.disableHomePage();
                 } else if (event.getClickCount() == 1 && row.isSelected() && (! row.isEmpty())) {
                     currentSelected = row.getItem();
                     deleteBtn.setDisable(false);
@@ -132,12 +136,17 @@ public class ClientsPageController implements Initializable {
 
     @FXML
     void onClickEditBtn(ActionEvent event) {
-        clientView = new ClientView(currentSelected);
+        if (clientView != null) {
+            clientView.endClientView();
+        }
+        clientView = new ClientView(this, currentSelected);
+        mainView.disableHomePage();
     }
 
     @FXML
     void onClickNewBtn(ActionEvent event) {
         clientView = new ClientView(this, userModel);
+        mainView.disableHomePage();
     }
 
     public void newClientModelCreated(ClientModel clientModel) {
@@ -146,5 +155,9 @@ public class ClientsPageController implements Initializable {
             filteredList.add(clientModel);
         }
         userModel.setClientModels(list);
+    }
+
+    public void clientViewEnded() {
+        mainView.enableHomePage();
     }
 }

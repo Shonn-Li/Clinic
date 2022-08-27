@@ -1,5 +1,6 @@
 package com.java.clinic.model;
 
+import com.java.clinic.connection.DBConnection;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -22,10 +23,6 @@ public class TransactionModel {
     private SimpleDoubleProperty amount; // remaining times for the treatment plan
     private SimpleStringProperty purpose;
     private SimpleStringProperty note;
-    private String url = "jdbc:mysql://localhost:3306/clinic";
-    private String dbUser = "root";
-    private String dbPassword = "Shonnlee2003";
-    private Connection connection;
     private Statement statement;
     private ResultSet queryOutput;
     private int queryOutputStatus;
@@ -34,8 +31,7 @@ public class TransactionModel {
         try {
             this.userModel = userModel;
             this.transactionId = new SimpleIntegerProperty(transactionId);
-            connection = DriverManager.getConnection(url, dbUser, dbPassword);
-            statement = connection.createStatement();
+            statement = DBConnection.getConnection().createStatement();
             queryOutput = statement.executeQuery(selectTransactionQuery(transactionId));
             System.out.print("loading transaction model (I should be singular): ");
             while (queryOutput.next()) {
@@ -73,8 +69,7 @@ public class TransactionModel {
         this.purpose = new SimpleStringProperty(purpose);
         this.note = new SimpleStringProperty(note);
         try {
-            connection = DriverManager.getConnection(url, dbUser, dbPassword);
-            statement = connection.createStatement();
+            statement = DBConnection.getConnection().createStatement();
             statement.executeUpdate(createTransactionQuery(), Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = statement.getGeneratedKeys();
             rs.next();

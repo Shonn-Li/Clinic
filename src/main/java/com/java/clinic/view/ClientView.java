@@ -33,8 +33,9 @@ public class ClientView {
     private static final double WINDOW_X = 800;
     private static final double WINDOW_Y = 800;
 
-    public ClientView(ClientModel clientModel) {
+    public ClientView(ClientsPageController clientsPageController, ClientModel clientModel) {
         this.clientModel = clientModel;
+        this.clientsPageController = clientsPageController;
         drawBackground();
         initClientInfoPage();
         initClientStatusBar();
@@ -68,10 +69,13 @@ public class ClientView {
         stage.setMinWidth(780);
         stage.setMinHeight(600);
         stage.setScene(scene);
+        stage.setOnCloseRequest( event -> {
+            clientsPageController.clientViewEnded();} );
         stage.show();
     }
 
     public void endClientView() {
+        clientsPageController.clientViewEnded();
         stage.close();
     }
 

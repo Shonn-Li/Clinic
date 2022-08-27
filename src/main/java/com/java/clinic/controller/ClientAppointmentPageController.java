@@ -9,6 +9,8 @@ import com.java.clinic.model.ClientModel;
 import com.java.clinic.view.AppointmentView;
 import com.java.clinic.view.ClientView;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -35,7 +37,7 @@ public class ClientAppointmentPageController {
     public void initUI() {
         CalendarView calendarView = new CalendarView();
         calendarView.setEntryFactory(param -> new AppointmentModel(clientModel.getUserModel(),"new appointment", param.getZonedDateTime()));
-        calendarView.setEntryDetailsPopOverContentCallback(param -> appointmentView.initAppointmentView((AppointmentModel) param.getEntry()));
+        calendarView.setEntryDetailsPopOverContentCallback(param -> appointmentView.initAppointmentView((AppointmentModel) param.getEntry(), clientModel.getClientId()));
         calendarView.showAddCalendarButtonProperty().set(false);
         calendarView.showMonthPage();
         // setting up work calendar
@@ -48,7 +50,18 @@ public class ClientAppointmentPageController {
             work.addEntry(appointmentModel);
         });
         work.addEventHandler(new CalendarEventHandler());
-
+        clientModel.getUserModel().appointmentModelsProperty().addListener(new ChangeListener<ObservableList<AppointmentModel>>() {
+            @Override
+            public void changed(ObservableValue<? extends ObservableList<AppointmentModel>> observable, ObservableList<AppointmentModel> oldValue, ObservableList<AppointmentModel> newValue) {
+//                work.clear();
+                System.out.println("new appointment model in client size (by bar): " );
+                clientModel.getAppointmentModels().forEach((appointmentModel) -> {
+                    System.out.print("I");
+                    work.addEntry(appointmentModel);
+                });
+                System.out.println("");
+            }
+        });
 
         calendarView.setRequestedTime(LocalTime.now());
         Thread updateTimeThread = new Thread("Calendar: Update Time Thread") {

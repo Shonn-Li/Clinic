@@ -1,5 +1,6 @@
 package com.java.clinic.model;
 
+import com.java.clinic.connection.DBConnection;
 import com.java.clinic.exception.EmailAlreadyExistException;
 import com.java.clinic.exception.UserPasswordOrNameIncorrectException;
 import com.java.clinic.exception.UsernameAlreadyExistException;
@@ -28,10 +29,6 @@ public class UserModel {
     private SimpleListProperty<AppointmentModel> appointmentModels;
     private ResultSet queryOutput;
     private int queryOutputStatus;
-    private String url = "jdbc:mysql://localhost:3306/clinic";
-    private String dbUser = "root";
-    private String dbPassword = "Shonnlee2003";
-    private Connection connection;
     private Statement statement;
     private Boolean firstTimeUser = false;
 
@@ -41,8 +38,7 @@ public class UserModel {
         this.password = new SimpleStringProperty(password);
 
         try {
-            Connection connection = DriverManager.getConnection(url, dbUser, dbPassword);
-            Statement statement = connection.createStatement();
+            Statement statement = DBConnection.getConnection().createStatement();
             queryOutput = statement.executeQuery(searchUserQuery(username, password));
             if (!queryOutput.isBeforeFirst()) {
                 throw new UserPasswordOrNameIncorrectException();
@@ -76,8 +72,7 @@ public class UserModel {
         this.phoneNumber = new SimpleStringProperty("");
         this.userFullName = new SimpleStringProperty(getUserFirstName() + " " + getUserLastName());
         try {
-            connection = DriverManager.getConnection(url, dbUser, dbPassword);
-            statement = connection.createStatement();
+            statement = DBConnection.getConnection().createStatement();
             queryOutput = statement.executeQuery(searchUserNameQuery(username));
             if (queryOutput.next()) {
                 throw new UsernameAlreadyExistException();
@@ -105,8 +100,7 @@ public class UserModel {
     public void initClientModels() {
         try {
             ObservableList<ClientModel> clientModelList = FXCollections.observableArrayList();;
-            connection = DriverManager.getConnection(url, dbUser, dbPassword);
-            statement = connection.createStatement();
+            statement = DBConnection.getConnection().createStatement();
             queryOutput = statement.executeQuery(selectAllClientIdQuery(this.getUserId()));
             while (queryOutput.next()) {
                 clientModelList.add(new ClientModel(queryOutput.getInt("client_id"), this));
@@ -119,9 +113,8 @@ public class UserModel {
 
     public void initTransactionModels() {
         try {
-            ObservableList<TransactionModel> transactionModelList = FXCollections.observableArrayList();;
-            Connection connection = DriverManager.getConnection(url, dbUser, dbPassword);
-            Statement statement = connection.createStatement();
+            ObservableList<TransactionModel> transactionModelList = FXCollections.observableArrayList();
+            statement = DBConnection.getConnection().createStatement();
             queryOutput = statement.executeQuery(selectAllTransactionIdQuery(this.getUserId()));
             while (queryOutput.next()) {
                 transactionModelList.add(new TransactionModel(queryOutput.getInt("transaction_id"), this));
@@ -134,9 +127,8 @@ public class UserModel {
 
     public void initAppointmentModels() {
         try {
-            ObservableList<AppointmentModel> appointmentModelList = FXCollections.observableArrayList();;
-            Connection connection = DriverManager.getConnection(url, dbUser, dbPassword);
-            Statement statement = connection.createStatement();
+            ObservableList<AppointmentModel> appointmentModelList = FXCollections.observableArrayList();
+            statement = DBConnection.getConnection().createStatement();
             queryOutput = statement.executeQuery(selectAllAppointmentIdQuery(this.getUserId()));
             while (queryOutput.next()) {
                 appointmentModelList.add(new AppointmentModel(queryOutput.getInt("appointment_id"), this));
