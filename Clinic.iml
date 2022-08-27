@@ -13,7 +13,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../mysql-connector-java-8.0.30/mysql-connector-java-8.0.30.jar!/" />
+          <root url="jar://$USER_HOME$/mysql-connector-java-8.0.30/mysql-connector-java-8.0.30.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -23,6 +23,15 @@
       <library>
         <CLASSES>
           <root url="jar://$USER_HOME$/Downloads/view-11.10.7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Downloads/jfoenix-9.0.10.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -62,14 +71,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:5.3.19" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.6.7" level="project" />
     <orderEntry type="library" name="Maven: com.jfoenix:jfoenix:9.0.10" level="project" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/jfoenix-9.0.10.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:8.0.24" level="project" />
+    <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.11.4" level="project" />
   </component>
 </module>
