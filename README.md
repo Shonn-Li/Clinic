@@ -1,5 +1,5 @@
 # Clinic
-This software is write specifically for a clinic company and is current deployed and in use. Code are open for skills demonstration, but it is not open source.
+This software is written specifically for a clinic company and is current deployed and in use. Code are open for skills demonstration, but it is not open source.
 
 Setup
 The project runs on Intellij, with JDK 18, and Calendarviewfx jar for external libraries.
